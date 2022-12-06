@@ -12,7 +12,7 @@
 
 /* Inician estilos */
 body {
-    --opacidad-negro: 0.25;
+    --opacidad-negro: 0.19;
     background-image: linear-gradient(rgba(0, 0, 0, var(--opacidad-negro)), rgba(0, 0, 0, var(--opacidad-negro))), url('images/background-image.png');
     color: black;
     font-family: Cardelina;
@@ -61,18 +61,20 @@ margin: auto;
     text-align: left;
     min-width: 200px;
     margin-bottom: 5px;
+    font-size: 30px;
 }
 
 .aside-2 {
     margin:10px;
     margin-top:1px;
     text-align: left;
+    font-size: 30px;
 }
 
 .footer {
     margin:20px;
    text-align: center;
-   font-size: 19px;
+   font-size: 30px;
    min-width: 300px;
    color: green;
     text-shadow: black, 0.9px 0.9px;
@@ -85,13 +87,13 @@ margin: auto;
 /* Estilos de encabezados */
 h1{
     font-family: Bulgathi;
-    font-size: 50px;
+    font-size: 80px;
     text-shadow: green .8px .7px;
     margin: 5px;
 }
 h2{
     font-family: Bulgathi;
-    font-size: 40px;
+    font-size: 70px;
     text-shadow: green .8px .7px;
     margin: 5px;
     text-align: center;
@@ -119,14 +121,15 @@ h2{
 }
 #img_mitad{
     margin-top: 1ex;
-    max-width: 700px;
+    max-width:100%;
+    height:auto;
 }
 
 /* Estilos de párrafos */
 
 p {
     text-align: center;
-    font-size: 20px;
+    font-size: 30px;
     font-weight: bolder;
     text-align: center;
     margin:10px;
@@ -134,17 +137,18 @@ p {
 }
 #p_main_1{
     min-width: 200px;
-    font-size: 26px;
+    font-size: 30px;
 }
 #p_main_2{
     min-width: 200px;
-    font-size: 20px;
+    font-size: 30px;
 }
 
 /* Estilos de listas */
 
 li{
     text-align: center;
+    font-weight: bold;
 }
 
 /* Estilos de enlaces */
