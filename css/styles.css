@@ -3,8 +3,7 @@
 
 /* Inician estilos */
 body {
-    --opacidad-negro: 0.19;
-    background-color: aliceblue;
+    background-color: whitesmoke;
     color: black;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     
@@ -56,6 +55,8 @@ margin: auto;
 
 .aside-2 {
     margin:10px;
+    padding-left: 30px;
+    padding-right: 30px;
     margin-top:1px;
     text-align: left;
     font-size: 30px;
@@ -76,18 +77,18 @@ margin: auto;
 
 /* Estilos de encabezados */
 h1{
-    font-family: Serif,'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 60px;
     text-shadow: green .8px .7px;
     margin: 5px;
 }
 h2{
-    font-family: Serif, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 40px;
-    text-shadow: green .8px .7px;
+    text-shadow: purple .8px .7px;
     margin: 5px;
     text-align: center;
-    color: black;
+    color: green;
 }
 
 /* Estilos de imágenes */
@@ -141,7 +142,7 @@ li{
 /* Estilos de enlaces */
 
 a {
-    text-align: center;
+    background-color: aliceblue;
 }
 a:link {
     color:green;
