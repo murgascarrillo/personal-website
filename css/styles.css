@@ -1,0 +1,161 @@
+/* Hoja de estilos */
+
+/* Agregar tipografías */
+@font-face {
+    font-family: Cardelina; /* Font by Ines Abad https://www.behance.net/ines_abad */
+    src: url(fonts/Cardelina.otf);
+}
+@font-face {
+    font-family: Bulgathi; /* Font by EssentialsStudio https://www.1001fonts.com/bulgathi-font.html */
+    src: url(fonts/Bulgathi.ttf);
+}
+
+/* Inician estilos */
+body {
+    --opacidad-negro: 0.19;
+    background-image: linear-gradient(rgba(0, 0, 0, var(--opacidad-negro)), rgba(0, 0, 0, var(--opacidad-negro))), url('images/background-image.png');
+    color: black;
+    font-family: Cardelina;
+    background-repeat: repeat;
+    
+}
+
+/* Estilos del envoltorio. Uso flexbox - una forma de distribuir los elementos de la página. Utilizando enseñanzas de CSS Tricks https://css-tricks.com/snippets/css/a-guide-to-flexbox/. */
+.wrapper{
+    display:flex;
+    flex-flow: row wrap;
+}
+
+/* Estilos generales de los items del envoltorio. */
+.wrapper > * {
+    flex: 1 100%;
+    align-items: center;
+}
+
+@media all and (min-width: 600px) {
+    .aside { flex: 1 auto; }
+  }
+
+  @media all and (min-width: 800px) {
+    .main { flex: 3 0px; }
+    .aside-1 { order: 1; }
+    .main    { order: 2; }
+    .aside-2 { order: 3; }
+    .footer  { order: 4; }
+  }
+
+.header {
+    font-weight: bold;
+    margin: 10px;
+    text-align: center;
+    color: black;
+    text-shadow: green, 2px 2px;
+}
+
+.aside-1 {
+margin: auto;
+}
+
+.main {
+    margin:20px;
+    text-align: left;
+    min-width: 200px;
+    margin-bottom: 5px;
+    font-size: 30px;
+}
+
+.aside-2 {
+    margin:10px;
+    margin-top:1px;
+    text-align: left;
+    font-size: 30px;
+}
+
+.footer {
+    margin:20px;
+   text-align: center;
+   font-size: 30px;
+   min-width: 300px;
+   color: green;
+    text-shadow: black, 0.9px 0.9px;
+    font-weight: bold;
+}
+
+
+/* Estilos de imágenes, párrafos, listas y enlaces */
+
+/* Estilos de encabezados */
+h1{
+    font-family: Bulgathi;
+    font-size: 80px;
+    text-shadow: green .8px .7px;
+    margin: 5px;
+}
+h2{
+    font-family: Bulgathi;
+    font-size: 70px;
+    text-shadow: green .8px .7px;
+    margin: 5px;
+    text-align: center;
+    color: black;
+}
+
+/* Estilos de imágenes */
+.centrable {
+    display: block;
+    margin:auto;
+    transition:all .5s ease-in-out;
+}
+#img_logo{
+    width: 400px;
+}
+#img_marca{
+    border-style: solid;
+    border-top-width: 9px;
+    border-radius: 60%;
+    border-width: 4px;
+    border-color: black;
+}
+#img_marca:hover{
+    border-color:rgb(4, 209, 4);
+}
+#img_mitad{
+    margin-top: 1ex;
+    max-width:100%;
+    height:auto;
+}
+
+/* Estilos de párrafos */
+
+p {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bolder;
+    text-align: center;
+    margin:10px;
+    text-justify: auto;
+}
+#p_main_1{
+    min-width: 200px;
+    font-size: 30px;
+}
+#p_main_2{
+    min-width: 200px;
+    font-size: 30px;
+}
+
+/* Estilos de listas */
+
+li{
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Estilos de enlaces */
+
+a:link {
+    color:green;
+}
+a:hover {
+    color:orangered;
+}
