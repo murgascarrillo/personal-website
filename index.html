@@ -100,18 +100,18 @@ margin: auto;
 
 /* Estilos de encabezados */
 h1{
+    font-weight: bolder;color:black; text-shadow: 2px 2px 2px green;
+    
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 60px;
-    text-shadow: green .8px .7px;
     margin: 5px;
 }
 h2{
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: bolder;color:black; text-shadow: 2px 1.4px 1.4px green;
     font-size: 40px;
-    text-shadow: purple .8px .7px;
+    
     margin: 5px;
     text-align: center;
-    color: green;
 }
 
 /* Estilos de imágenes */
@@ -156,6 +156,13 @@ p {
     font-size: 30px;
 }
 
+#span_enfasis{
+    font-weight: bolder;
+    color:black;
+    text-shadow: 1px 1px 1px green;
+}
+
+
 /* Estilos de listas */
 
 li{
@@ -193,7 +200,8 @@ a:hover {
                 "addressCountry": "Colombia"
             }
         },
-        "affiliation": [
+        "affiliation":
+        [
             {
                 "@type": "Organization",
                 "name": "MurgasCarrillo Soluciones",
@@ -201,7 +209,7 @@ a:hover {
                     "https://twitter.com/murgascarrillo",
                     "https://www.facebook.com/murgascarrillo/",
                 ]
-              }
+            }
         ],
         "alumniOf": [
             {
@@ -246,7 +254,8 @@ a:hover {
             "https://profiles.wordpress.org/murgascarrillo",
             "https://stackoverflow.com/users/20429366/carlosmurgas"
             ]
-        }
+        
+    }
 
 </script>
 </head>
@@ -272,14 +281,14 @@ a:hover {
                 你好! <br/></p>
             <p id="p_main_2">Soy Carlos MurgasCarrillo.<br />
                 Tengo 26 años. Vivo en Colombia.<br />
-                Aprendo a diario para ser desarrollador _Block End_ fullstack.<br />
-                Me gusta crear, viajar y conocer personas e ideas. Si has llegado hasta aquí, me gustaría conocerte.</p>    
+                Aprendo a diario para ser desarrollador Block End fullstack.<br />
+                Me gusta crear, viajar y la comida sabrosa.</p>   
             <img class="centrable" id="img_mitad"src="images/img_mitad.webp" alt="Imagen del Cerro Cerrejón en tonos púrpura"/>
         </div>
         <!-- Elemento 2 -->
         <div class="aside-2">
             
-            <h2>Qué ofrezco</h2>
+            <h2>Mi portafolio</h2>
             <p>
             <dl>
                 <dt style="font-weight:bolder">Web</dt>
@@ -293,17 +302,27 @@ a:hover {
                 <dd>- Administración de redes sociales.</dd>
                 <dd>- Optimización de redes sociales.</dd>
 
-                <dt style="font-weight:bolder">Legal</dt>
-                <dd>- Redacción de documentos.</dd>
-                <dd>- Gestión de trámites.</dd>
-                <dd>- Apoyo en conciliaciones.</dd>
-                <dd>- Demandas judiciales de mínima cuantía.</dd>
-                <dd>- Consultas y asesorías.</dd>
+                
             </dl>
 
-            </p>
-            <a style="align-content: center;" href="https://calendly.com/agendamurgascarrillo/30min">¡Contáctame!</a><br/>
-            <br/>
+            <div id="container-conclave">
+                
+                <p style="font-size:26px;">Te ayudo a solucionar <span style="font-weight: bolder;color:black; text-shadow: 1px 1px 1px green;">legalmente</span> en Colombia:</p>
+                <a style="margin-bottom: 2rem;" href="https://murgascarrillo.com/conclave"><img class="centrable" id="img_banner_conclave" src="images/banner_conclave.webp" alt="Banner Cónclave" width=400/></a>
+                </a>
+                <p style="font-size: 19px;display: flex; line-height: 26px;             
+                flex-direction: column;     
+                justify-content: left;    
+                align-items: center;">
+                    ✅ <span id="span_enfasis">Redacción</span> de documentos.<br />
+                    ✅ <span id="span_enfasis">Investigación</span> privada de personas.<br />
+                    ✅ <span id="span_enfasis">Apoyo</span> en gestiones.<br />
+                    ✅ <span id="span_enfasis">Cobro</span> de deudas.<br />
+
+                </p>
+                
+
+            </div>
             
             <h2>Mis proyectos</h2>
             <li>
