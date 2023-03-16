@@ -25,10 +25,15 @@
 
 
 /* Inician estilos */
+html {
+    background-color: black;
+    margin:10%;
+
+}
+
 body {
     background-color: white;
     color: black;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     
 }
 
@@ -36,6 +41,19 @@ body {
 .wrapper{
     display:flex;
     flex-flow: row wrap;
+}
+
+header {
+    font-weight: bold;
+    margin-top: 5px;
+    text-align: center;
+    color: black;
+    text-shadow: green, 2px 2px;
+    position:fixed;
+    left:0px;
+    top:0px;
+    background-color: white;
+    border:3px solid black;
 }
 
 /* Estilos generales de los items del envoltorio. */
@@ -55,14 +73,6 @@ body {
     .aside-2 { order: 3; }
     .footer  { order: 4; }
   }
-
-.header {
-    font-weight: bold;
-    margin: 10px;
-    text-align: center;
-    color: black;
-    text-shadow: green, 2px 2px;
-}
 
 .aside-1 {
 margin: auto;
@@ -85,6 +95,7 @@ margin: auto;
     font-size: 30px;
 }
 
+
 .footer {
     margin:20px;
    text-align: center;
@@ -96,18 +107,43 @@ margin: auto;
 }
 
 
+#container-conclave {
+border:7px solid black;
+border-radius: 10px;
+padding: 0;
+width: 300px;
+margin:auto;
+}#container-conclave:hover{
+    border:7px solid rgb(71, 180, 57);
+}
+
+#container-proyectos {
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    min-width: 10%;
+
+
+}
+
+
+
 /* Estilos de imágenes, párrafos, listas y enlaces */
 
 /* Estilos de encabezados */
 h1{
-    font-weight: bolder;color:black; text-shadow: 2px 2px 2px green;
-    
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    font-size: 60px;
+    font-size: 50px;
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    background: -webkit-linear-gradient(green, black);
+    background-clip:initial;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: sans-serif;
     margin: 5px;
+    text-align:center;
 }
 h2{
-    font-weight: bolder;color:black; text-shadow: 2px 1.4px 1.4px green;
+    font-weight: bolder;color:black; text-shadow: 1.4px 1.4px 3px green;
     font-size: 40px;
     
     margin: 5px;
@@ -121,7 +157,8 @@ h2{
     transition:all .5s ease-in-out;
 }
 #img_logo{
-    width: 400px;
+    width: 200px;
+    margin-left: 10px;
 }
 #img_marca{
     border-style: solid;
@@ -131,13 +168,19 @@ h2{
     border-color: black;
 }
 #img_marca:hover{
-    border-color:crimson;
+    border-color:rgb(76, 194, 76)
 }
 #img_mitad{
     margin-top: 1ex;
     max-width:100%;
     height:auto;
 }
+#img_banner_conclave{
+    max-width:100%;
+    min-width: 10%;
+}
+
+
 
 /* Estilos de párrafos */
 
@@ -154,6 +197,11 @@ p {
 #p_main_2{
     min-width: 200px;
     font-size: 30px;
+}
+
+#span_p_e{
+    font-weight:lighter;color:black; text-shadow: 1.4px 1.4px 3px green;
+
 }
 
 #span_enfasis{
@@ -260,36 +308,59 @@ a:hover {
 </script>
 </head>
 <body>
+    <!-- Header -->
+    <header style="display:flex;flex-direction: row;">
     <!-- Imagen del sitio -->
-    <a href="https://murgascarrillo.com"><img class="centrable" id="img_logo" src="images/logo.webp" alt="Logo MurgasCarrillo" width=400/></a>
+    <a href="https://murgascarrillo.com" tabindex=0>
+        <img class="centrable" id="img_logo" src="images/logo.webp" alt="Logo MurgasCarrillo" width=400/>
+    </a>
+    <p style="border: 2px solid black;border-radius: 5px; font-size: 14px;width: 30%; text-align: center;margin:auto;">
+        MurgasCarrillo Soluciones
+    </p>
+    </header>
+    
     <!-- Inicia envoltorio -->
     <div class="wrapper">
-       <div class="header">
+    
             <h1>Carlos Murgas</h1>
-            <p id="subtitle">Desarrollador Web & Consultor legal</p>
-       </div>
+            <p id="span_p_e" style="font-weight:bold;">Desarrollador Web & Consultor legal</p>
     <!-- Elementos 1 -->
        <div class="aside-1">
             <img class="centrable" id="img_marca" src="images/hero.webp" alt="Imagen de Carlos Murgas" width="242"/>
        </div>
       <!-- Elemento principal (central ) -->
         <div class="main">
-            <h2>Quién soy</h2>
+            <h2>Bits sobre mí</h2>
             <p id="p_main_1"> 
                 Hola! <br/>
                 Hello! <br />
                 你好! <br/></p>
-            <p id="p_main_2">Soy Carlos MurgasCarrillo.<br />
+            <p id="p_main_2">Soy <span id="span_p_e">Carlos MurgasCarrillo</span>.<br />
                 Tengo 26 años. Vivo en Colombia.<br />
-                Aprendo a diario para ser desarrollador Block End fullstack.<br />
-                Me gusta crear, viajar y la comida sabrosa.</p>   
+                Aprendo a diario.<br/>
+                Me gusta <span id="span_p_e">crear, viajar y la comida sabrosa.</span></p>   
             <img class="centrable" id="img_mitad"src="images/img_mitad.webp" alt="Imagen del Cerro Cerrejón en tonos púrpura"/>
         </div>
         <!-- Elemento 2 -->
         <div class="aside-2">
             
-            <h2>Mi portafolio</h2>
-            <p>
+            <h2>Portafolio</h2>
+
+            <div id="container-conclave">
+                
+                <p style="font-size:26px;">Te ayudo a solucionar <span style="font-weight: bolder;color:black; text-shadow: 1px 1px 1px green;">legalmente</span> en Colombia:</p>
+                <a style="margin-bottom: 2rem;" href="https://murgascarrillo.com/conclave"><img class="centrable" id="img_banner_conclave" src="images/banner_conclave.webp" alt="Banner Cónclave"/></a>
+                </a>
+                <p style="font-size: 19px;display: flex; line-height: 26px; margin-top: 0px;            
+                flex-direction: column;     
+                justify-content: left;    
+                align-items: center;">
+                    ✅ <span id="span_enfasis">Redacción</span> de documentos.<br />
+                    ✅ <span id="span_enfasis">Investigación</span> privada de personas.<br />
+                    ✅ <span id="span_enfasis">Apoyo</span> en gestiones.<br />
+                    ✅ <span id="span_enfasis">Cobro</span> de deudas.<br />
+                </p>
+            </div>
             <dl>
                 <dt style="font-weight:bolder">Web</dt>
                 <dd>- Creación de páginas web.</dd>
@@ -302,35 +373,28 @@ a:hover {
                 <dd>- Administración de redes sociales.</dd>
                 <dd>- Optimización de redes sociales.</dd>
 
-                
+        
             </dl>
 
-            <div id="container-conclave">
+            <h2>Proyectos</h2>
+            <div id="container-proyectos">
                 
-                <p style="font-size:26px;">Te ayudo a solucionar <span style="font-weight: bolder;color:black; text-shadow: 1px 1px 1px green;">legalmente</span> en Colombia:</p>
-                <a style="margin-bottom: 2rem;" href="https://murgascarrillo.com/conclave"><img class="centrable" id="img_banner_conclave" src="images/banner_conclave.webp" alt="Banner Cónclave" width=400/></a>
-                </a>
-                <p style="font-size: 19px;display: flex; line-height: 26px;             
-                flex-direction: column;     
-                justify-content: left;    
-                align-items: center;">
-                    ✅ <span id="span_enfasis">Redacción</span> de documentos.<br />
-                    ✅ <span id="span_enfasis">Investigación</span> privada de personas.<br />
-                    ✅ <span id="span_enfasis">Apoyo</span> en gestiones.<br />
-                    ✅ <span id="span_enfasis">Cobro</span> de deudas.<br />
-
-                </p>
+                <a style="max-width:20%;font-size:small;" href="https://murgascarrillo.github.io/gendocu" tabindex=0>
+                    <img src="images/gendocu.webp" style="max-width: 90px">
+                </img>
                 
-
+                </a><br />
+                <p style="font-size:14px;height: 60px;width: auto; text-align:justify;">
+                    <strong>gendocu</strong><br /> Un generador de documentos de código libre. versión: 0.02.
+                </p><br />
+                <a href="https://discord.gg/CZWDZmyCUC" tabindex=0>
+                    <img src="images/cryptocolombia.webp" style="max-width: 90px;"></img>
+                </a><br />
+                <p style="font-size:14px;height: 60px;width: auto; text-align:justify;">
+                    <strong>CryptoColombia</strong><br /> Comunidad internacional enfocada en aprender sobre tecnología y descentralización.
+                </p><br />
             </div>
-            
-            <h2>Mis proyectos</h2>
-            <li>
-                <a href="https://murgascarrillo.github.io/gendocu">Gendocu</a> - Un generador de documentos de código abierto. versión: 0.02. 
-            </li>  
-            <li>
-                <a href="https://discord.gg/CZWDZmyCUC">CryptoColombia</a> - Comunidad internacional enfocada en aprender sobre tecnología y descentralización.
-            </li> 
+         
            </div>
            <!-- Pie de página con enlaces a redes sociales -->
         <div class="footer">
