@@ -19,293 +19,7 @@
  <meta property="og:image" content="https://github.com/murgascarrillo/onepage-flexbox/blob/main/images/twittercard.webp"/>
  <meta name="robots" content="index,follow,archive,translate,imageindex"/>
  <link rel="icon" type="image/x-icon" href="images/favicon.ico"/>
-
- <style>
-    /* Hoja de estilos */
-
-
-/* Inician estilos */
-html {
-    background-color: black;
-    margin:10%;
-
-}
-
-body {
-    background-color: white;
-    color: black;
-    
-}
-
-/* Estilos del envoltorio. Uso flexbox - una forma de distribuir los elementos de la página. Utilizando enseñanzas de CSS Tricks https://css-tricks.com/snippets/css/a-guide-to-flexbox/. */
-.wrapper{
-    display:flex;
-    flex-flow: row wrap;
-}
-
-header {
-    font-weight: bold;
-    margin-top: 5px;
-    text-align: center;
-    color: black;
-    text-shadow: green, 2px 2px;
-    position:fixed;
-    left:0px;
-    top:0px;
-    background-color: white;
-    border:3px solid black;
-}
-
-/* Estilos generales de los items del envoltorio. */
-.wrapper > * {
-    flex: 1 100%;
-    align-items: center;
-}
-
-@media all and (min-width: 600px) {
-    .aside { flex: 1 auto; }
-  }
-
-  @media all and (min-width: 800px) {
-    .main { flex: 3 0px; }
-    .aside-1 { order: 1; }
-    .main    { order: 2; }
-    .aside-2 { order: 3; }
-    .footer  { order: 4; }
-  }
-
-.aside-1 {
-margin: auto;
-}
-
-.main {
-    margin:20px;
-    text-align: left;
-    min-width: 200px;
-    margin-bottom: 5px;
-    font-size: 30px;
-}
-
-.aside-2 {
-    margin:10px;
-    padding-left: 30px;
-    padding-right: 30px;
-    margin-top:1px;
-    text-align: left;
-    font-size: 30px;
-}
-
-
-.footer {
-    margin:20px;
-   text-align: center;
-   font-size: 30px;
-   min-width: 300px;
-   color: black;
-    text-shadow: .8px .7px;
-    font-weight: bold;
-}
-
-
-#container-conclave {
-border:7px solid black;
-border-radius: 10px;
-padding: 0;
-width: 300px;
-margin:auto;
-}#container-conclave:hover{
-    border:7px solid rgb(71, 180, 57);
-}
-
-#container-proyectos {
-    display: flex;
-    flex-direction: row;
-    align-items: left;
-    min-width: 10%;
-
-
-}
-
-
-
-/* Estilos de imágenes, párrafos, listas y enlaces */
-
-/* Estilos de encabezados */
-h1{
-    font-size: 50px;
-    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    background: -webkit-linear-gradient(green, black);
-    background-clip:initial;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-family: sans-serif;
-    margin: 5px;
-    text-align:center;
-}
-h2{
-    font-weight: bolder;color:black; text-shadow: 1.4px 1.4px 3px green;
-    font-size: 40px;
-    
-    margin: 5px;
-    text-align: center;
-}
-
-/* Estilos de imágenes */
-.centrable {
-    display: block;
-    margin:auto;
-    transition:all .5s ease-in-out;
-}
-#img_logo{
-    width: 200px;
-    margin-left: 10px;
-}
-#img_marca{
-    border-style: solid;
-    border-top-width: 9px;
-    border-radius: 60%;
-    border-width: 4px;
-    border-color: black;
-}
-#img_marca:hover{
-    border-color:rgb(76, 194, 76)
-}
-#img_mitad{
-    margin-top: 1ex;
-    max-width:100%;
-    height:auto;
-}
-#img_banner_conclave{
-    max-width:100%;
-    min-width: 10%;
-}
-
-
-
-/* Estilos de párrafos */
-
-p {
-    text-align:center;
-    font-size: 30px;
-    margin:10px;
-    text-justify: auto;
-}
-#p_main_1{
-    min-width: 200px;
-    font-size: 30px;
-}
-#p_main_2{
-    min-width: 200px;
-    font-size: 30px;
-}
-
-#span_p_e{
-    font-weight:lighter;color:black; text-shadow: 1.4px 1.4px 3px green;
-
-}
-
-#span_enfasis{
-    font-weight: bolder;
-    color:black;
-    text-shadow: 1px 1px 1px green;
-}
-
-
-/* Estilos de listas */
-
-li{
-    text-align: justify;
-}
-
-/* Estilos de enlaces */
-
-a {
-    background-color: aliceblue;
-}
-a:link {
-    color:green;
-}
-a:hover {
-    color:orangered;
-}
- </style>
-
-<script type="application/ld+json">
-
-    {
-        "@context": "http://www.schema.org",
-        "@type": "Person",
-        "@id": "https://murgascarrillo.com",
-        "name": "Carlos MurgasCarrillo",
-        "alternateName": "Carlos Murgas Carrillo",
-        "nationality": "Colombian",
-        "birthPlace" : {
-            "@type": "Place",
-            "address": {
-                  "@type": "PostalAddress",
-                "addressLocality": "Barrancas",
-                "addressRegion": "LG",
-                "addressCountry": "Colombia"
-            }
-        },
-        "affiliation":
-        [
-            {
-                "@type": "Organization",
-                "name": "MurgasCarrillo Soluciones",
-                "sameAs": [
-                    "https://twitter.com/murgascarrillo",
-                    "https://www.facebook.com/murgascarrillo/",
-                ]
-            }
-        ],
-        "alumniOf": [
-            {
-             "@type": "CollegeOrUniversity",
-             "name": "Platzi",
-             "sameAs": "https://en.wikipedia.org/wiki/platzi"
-            },
-            {
-             "@type": "CollegeOrUniversity",
-             "name": "Universidad del Norte"
-            }
-        ],
-        "gender": "Male",
-        "Description": "Developer",
-        "disambiguatingDescription": "Web Developer & Legal Consultant",
-        "jobTitle": "Freelancer",
-        "worksFor": [
-            {
-                "@type": "Organization",
-                "name": "MurgasCarrillo Soluciones",
-                "sameAs": [
-                    "https://twitter.com/murgascarrillo",
-                    "https://www.facebook.com/murgascarrillo"
-                ]
-            }
-        ],
-        "url": "https://murgascarrillo.com",
-        "image": "https://2.gravatar.com/avatar/e86dbbb5d96cdb8e36c4396ce106256a",
-        "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Barrancas",
-            "addressRegion": "LG",
-            "addressCountry": "Colombia"
-        },
-        "sameAs": [
-            "https://twitter.com/murgascarrillo",
-            "https://pinterest.com/murgascarrillo",
-            "https://instagram.com/murgascarrillo",
-            "https://www.facebook.com/murgascarrillo",
-            "https://linkedin.com/in/murgascarrillo",
-            "https://github.com/murgascarrillo",
-            "https://profiles.wordpress.org/murgascarrillo",
-            "https://stackoverflow.com/users/20429366/carlosmurgas"
-            ]
-        
-    }
-
-</script>
+ <link rel="stylesheet" type="text/css" href="styles.css" /> 
 </head>
 <body>
     <!-- Header -->
@@ -321,15 +35,16 @@ a:hover {
     
     <!-- Inicia envoltorio -->
     <div class="wrapper">
-    
-            <h1>Carlos Murgas</h1>
-            <p id="span_p_e" style="font-weight:bold;">Desarrollador Web & Consultor legal</p>
+        
     <!-- Elementos 1 -->
        <div class="aside-1">
-            <img class="centrable" id="img_marca" src="images/hero.webp" alt="Imagen de Carlos Murgas" width="242"/>
+            <img class="centrable" id="img_marca" src="images/hero.webp" alt="Imagen de Carlos Murgas" width="10%"/>
        </div>
       <!-- Elemento principal (central ) -->
         <div class="main">
+            <br/>
+            <h1>Carlos Murgas</h1>
+            <p id="span_p_e" style="font-weight:bold;">Desarrollador Web & Consultor legal</p>
             <h2>Bits sobre mí</h2>
             <p id="p_main_1"> 
                 Hola! <br/>
@@ -348,7 +63,7 @@ a:hover {
 
             <div id="container-conclave">
                 
-                <p style="font-size:26px;">Te ayudo a solucionar <span style="font-weight: bolder;color:black; text-shadow: 1px 1px 1px green;">legalmente</span> en Colombia:</p>
+                <p style="font-size:26px;">Soluciones <span style="font-weight: bolder;color:black; text-shadow: 1px 1px 1px green;">legales</span> en Colombia:</p>
                 <a style="margin-bottom: 2rem;" href="https://murgascarrillo.com/conclave"><img class="centrable" id="img_banner_conclave" src="images/banner_conclave.webp" alt="Banner Cónclave"/></a>
                 </a>
                 <p style="font-size: 19px;display: flex; line-height: 26px; margin-top: 0px;            
@@ -361,43 +76,50 @@ a:hover {
                     ✅ <span id="span_enfasis">Cobro</span> de deudas.<br />
                 </p>
             </div>
-            <dl>
-                <dt style="font-weight:bolder">Web</dt>
-                <dd>- Creación de páginas web.</dd>
-                <dd>- Rediseño de páginas web.</dd>
-                <dd>- Mantenimiento de páginas web.</dd>
-                <dd>- Optimización de SEO.</dd>
 
-                <dt style="font-weight:bolder">Redes Sociales</dt>
-                <dd>- Creación de redes sociales para negocios y organizaciones.</dd>
-                <dd>- Administración de redes sociales.</dd>
-                <dd>- Optimización de redes sociales.</dd>
-
+            <div id="container-murgascarrillosoluciones">
+                
+                <p style="font-size:26px;">Soluciones <span style="font-weight: bolder;color:black; text-shadow: 1px 1px 1px lightskyblue;">digitales</span> en el mundo:</p>
+                <a style="margin-bottom: 2rem;" href="https://murgascarrillo.com/murgascarrillosoluciones"><img class="centrable" id="img_banner_mcsoluciones" src="images/banner_mcsoluciones.webp" alt="Banner MCSoluciones"/></a>
+                </a>
+                <p style="font-size: 19px;display: flex; line-height: 26px; margin-top: 0px;            
+                flex-direction: column;     
+                justify-content: left;    
+                align-items: center;">
+                    ✅ <span id="span_enfasis">Páginas web.</span><br />
+                    ✅ <span id="span_enfasis">Aplicaciones.</span><br />
+                    ✅ <span id="span_enfasis">Eventos educativos</span><br />
+                    ✅ <span id="span_enfasis">Administración </span>de redes sociales.<br />
+                </p>
+            </div>
         
             </dl>
 
             <h2>Proyectos</h2>
             <div id="container-proyectos">
                 
-                <a style="max-width:20%;font-size:small;" href="https://murgascarrillo.github.io/gendocu" tabindex=0>
-                    <img src="images/gendocu.webp" style="max-width: 90px">
-                </img>
                 
-                </a><br />
-                <p style="font-size:14px;height: 60px;width: auto; text-align:justify;">
-                    <strong>gendocu</strong><br /> Un generador de documentos de código libre. versión: 0.02.
-                </p><br />
-                <a href="https://discord.gg/CZWDZmyCUC" tabindex=0>
-                    <img src="images/cryptocolombia.webp" style="max-width: 90px;"></img>
-                </a><br />
-                <p style="font-size:14px;height: 60px;width: auto; text-align:justify;">
-                    <strong>CryptoColombia</strong><br /> Comunidad internacional enfocada en aprender sobre tecnología y descentralización.
+                <p>
+                    <a href="https://murgascarrillo.github.io/gendocu" tabindex=0>
+                        <img src="images/gendocu.webp" style="max-width:40px"></img>
+                    </a><br />
+                    <strong>gendocu</strong><br />
+                    Un generador de documentos de código libre. versión: 0.02.
+                </p>
+                <br />
+                
+                <p>
+                    <a href="https://discord.gg/CZWDZmyCUC" tabindex=0>
+                        <img src="images/cryptocolombia.webp" style="max-width: 40px;"></img>
+                    </a><br />
+                    <strong>CryptoColombia</strong><br /> Un espacio para compartir información relacionada con criptomonedas.
                 </p><br />
             </div>
          
            </div>
            <!-- Pie de página con enlaces a redes sociales -->
         <div class="footer">
+            <br />
             También estoy en: <br />
             <a href="https://twitter.com/murgascarrillo"> <img src="images/icon_twitter.webp" alt="Icono Twitter by Reda on freeicons.io" width="40" /></a>
             <a href="https://linkedin.com/in/murgascarrillo"> <img src="images/icon_linkedin.webp" alt="Icono LinkedIn by Reda on freeicons.io" width="40" /></a>
