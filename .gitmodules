@@ -1,0 +1,3 @@
+[submodule "gendocu"]
+	path = gendocu
+	url = https://github.com/murgascarrillo/gendocu
