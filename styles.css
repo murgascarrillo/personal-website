@@ -4,11 +4,17 @@
 * {
     box-sizing: border-box;
   }
+
+  html
+  {
+    width: fit-content;
+  }
   
   /* Style the body */
   body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Open Sans', Helvetica, sans-serif, system-ui;
     margin: 0;
+
   }
   
   /* Header/logo Title */
@@ -86,9 +92,10 @@
   /* Fake image, just for this example */
   .fakeimg {
     background-color: #121d24;
-    width: 100%;
+    width: min-content;
     padding: 20px;
     color:white;
+
   }
   
   /* Footer */

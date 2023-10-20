@@ -18,26 +18,34 @@
     background-color: black;
       padding: 10px;
    }
+   
+   body{
+      border-radius: 10px;
+      margin-left: 15%;
+      margin-right: 15%;
+   }
 
    p {
-       color: #0ecc8a;
+       color: #000604;
        font-weight: 900;
        font-size: 20px;
-       font-family: Helvetica, Arial, sans-serif;
+       font-family: 'Open Sans', system-ui,'Helvetica Neue', sans-serif;
        text-align: center;
    }
    
    h1 {
       text-align: center;
-      font-size: 50px;
+      font-size: 42px;
    }
 
    a {
       font-weight: 900;
-      font-size: 30px;
+      font-size: 20px;
       display: block;
       margin:auto;
+      padding-bottom: 10px;
       text-align: center;
+      min-width: auto;
    }
 
    #img404 {
@@ -54,6 +62,8 @@
       width: 200;
       display: block;
       margin:auto;
+      margin-top: 10px;
+      padding: 10px;
    }
    </style>
 
@@ -61,7 +71,7 @@
 <body>
    <a href="https://murgascarrillo.com"><img class="centrable" id="img_logo" src="images/logo.webp" alt="Logo MurgasCarrillo" width=200/></a>
     <div class="main">
-      <h1>Error 404!</h1> 
+      <h1>¡Ups!😵<br>¡Error 404!</h1> 
       <img id="img404" src="data:image/webp;base64,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"/>
       <p>La página a la que intentaste acceder no existe o está fuera de servicio. Intenta ingresando a:</p>
       <a href="https://murgascarrillo.com">https://murgascarrillo.com</a>
