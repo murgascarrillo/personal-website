@@ -3,6 +3,7 @@
 
 * {
     box-sizing: border-box;
+    font-family: 'Open Sans', Helvetica, sans-serif, system-ui;
   }
 
   html
@@ -12,14 +13,14 @@
   
   /* Style the body */
   body {
-    font-family: 'Open Sans', Helvetica, sans-serif, system-ui;
-    margin: 0;
+   
+    margin:auto;
 
   }
   
   /* Header/logo Title */
   .header {
-    padding: 80px;
+    padding: 70px;
     text-align: center;
     background: #121d24;
     color: white;
@@ -44,7 +45,7 @@
     color: white;
     text-align: center;
     padding: 14px 20px;
-    text-decoration: none;
+    text-decoration:wavy;
   }
   
   /* Right-aligned link */
@@ -68,11 +69,12 @@
   
   /* Create two unequal columns that sits next to each other */
   /* Sidebar/left column */
-  .side {
+  .side{
     -ms-flex: 30%; /* IE10 */
     flex: 30%;
     background-color: #f1f1f1;
     padding: 20px;
+    font-size: 20px;
   }
   
   /* Main column */
@@ -81,21 +83,28 @@
     flex: 70%;
     background-color: white;
     padding: 20px;
+    width: auto;
   }
   
   .bannerimg{
     background-color: #121d24;
-    height: 100%;
-    width: fit-content;
+    height: auto;
+    width: auto;
   }
 
   /* Fake image, just for this example */
   .fakeimg {
     background-color: #121d24;
-    width: min-content;
     padding: 20px;
     color:white;
 
+  }
+
+  #div_img_me{
+    width: fit-content;
+    border-radius: 10%;
+    border-color: rgb(186, 0, 152);
+    border-style: solid;
   }
   
   /* Footer */
@@ -103,6 +112,11 @@
     padding: 20px;
     text-align: center;
     background: #ddd;
+  }
+
+
+  p{
+    font-size: 22px;
   }
   
   /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
