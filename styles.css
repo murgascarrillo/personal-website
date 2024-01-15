@@ -1,135 +1,122 @@
 /* Hoja de estilos */
-
-
 * {
-    box-sizing: border-box;
-    font-family: 'Open Sans', Helvetica, sans-serif, system-ui;
-  }
+  box-sizing: border-box;
+  font-family: 'Open Sans', Helvetica, sans-serif, system-ui;
+}
 
-  html
-  {
-    width: fit-content;
-  }
-  
-  /* Style the body */
-  body {
-   
-    margin:auto;
+html{
+  width: 100%;
+}
 
-  }
-  
-  /* Header/logo Title */
-  .header {
-    padding: 70px;
-    text-align: center;
-    background: #121d24;
-    color: white;
-  }
-  
-  /* Increase the font size of the heading */
-  .header h1 {
-    font-size: auto;
-  }
-  
-  /* Style the top navigation bar */
-  .navbar {
-    overflow: hidden;
-    background-color: #121d24;
-    color: white;
-  }
-  
-  /* Style the navigation bar links */
-  .navbar a {
-    float: left;
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 20px;
-    text-decoration:wavy;
-  }
-  
-  /* Right-aligned link */
-  .navbar a.right {
-    float: right;
-  }
-  
-  /* Change color on hover */
-  .navbar a:hover {
-    background-color: #ddd;
-    color: black;
-  }
-  
-  /* Column container */
-  .row {  
-    display: -ms-flexbox; /* IE10 */
-    display: flex;
-    -ms-flex-wrap: wrap; /* IE10 */
-    flex-wrap: wrap;
-  }
-  
-  /* Create two unequal columns that sits next to each other */
-  /* Sidebar/left column */
-  .side{
-    -ms-flex: 30%; /* IE10 */
-    flex: 30%;
-    background-color: #f1f1f1;
-    padding: 20px;
-    font-size: 20px;
-  }
-  
-  /* Main column */
-  .main {   
-    -ms-flex: 70%; /* IE10 */
-    flex: 70%;
-    background-color: white;
-    padding: 20px;
-    width: auto;
-  }
-  
-  .bannerimg{
-    background-color: #121d24;
-    height: auto;
-    width: auto;
-  }
+/* Style the body */
+body {
+  margin: auto;
+}
 
-  /* Fake image, just for this example */
-  .fakeimg {
-    background-color: #121d24;
-    padding: 20px;
-    color:white;
+/* Header/logo Title */
+.header {
+  padding: 5vw;
+  text-align: center;
+  background: #121d24;
+  color: white;
+}
 
-  }
+/* Increase the font size of the heading */
+.header h1 {
+  font-size: 35px;
+}
 
-  #div_img_me{
-    width: fit-content;
-    border-radius: 10%;
-    border-color: rgb(186, 0, 152);
-    border-style: solid;
-  }
-  
-  /* Footer */
-  .footer {
-    padding: 20px;
-    text-align: center;
-    background: #ddd;
-  }
+/* Style the top navigation bar */
+.navbar {
+  overflow: hidden;
+  background-color: #121d24;
+  color: white;
+}
+
+/* Style the navigation bar links */
+.navbar a {
+  float: left;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 2vw;
+  text-decoration: wavy;
+  font-size: 19px;
+}
+
+/* Right-aligned link */
+.navbar a.right {
+  float: left; 
+}
+
+/* Change color on hover */
+.navbar a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Column container */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* Create two unequal columns that sit next to each other */
+/* Sidebar/left column */
+.side {
+  max-width: 40%;
+
+  background-color: #f1f1f1;
+  padding: 2vw;
+  font-size: auto;
+}
+
+/* Main column */
+.main {
+  flex: auto;
+  background-color: white;
+  padding: 2vw;
+}
+
+/* Ensure images always fit their containers and never occupy more than 50% of their container's width */
+.img-container {
+  position: relative;
+  width: 100%;
+  max-width: 90%;
+  overflow: hidden;
+}
+
+.img-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+#img_me{
+  align-self: center;
+  width: 100px;
+}
 
 
-  p{
-    font-size: 22px;
-  }
-  
-  /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
-  @media screen and (max-width: 700px) {
-    .row {   
-      flex-direction: column;
+p{
+  font-size: 25px;
+  overflow: hidden;
+}
+  #p_intro{
+      align-self: center;
+      font-size:27px;
     }
-  }
-  
-  /* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
-  @media screen and (max-width: 400px) {
-    .navbar a {
-      float: none;
-      width: 100%;
+  .p_container{
+    position: relative;
+    max-width: 90%;
+    font-size: 19px;
     }
-  }
+
+
+/* Footer */
+.footer {
+  padding: 2vw;
+  text-align: center;
+  background: #ddd;
+  font-size:medium; /* Adjust the font size for better visibility */
+}
