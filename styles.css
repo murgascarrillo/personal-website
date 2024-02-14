@@ -17,6 +17,7 @@ body {
 .header {
   padding: 5vw;
   text-align: center;
+  align-items: center;
   background: #121d24;
   color: white;
 }
@@ -64,7 +65,7 @@ body {
 /* Create two unequal columns that sit next to each other */
 /* Sidebar/left column */
 .side {
-  max-width: 40%;
+  max-width: 100%;
 
   background-color: #f1f1f1;
   padding: 2vw;
@@ -80,21 +81,21 @@ body {
 
 /* Ensure images always fit their containers and never occupy more than 50% of their container's width */
 .img-container {
-  position: relative;
+  align-self: center;
   width: 100%;
-  max-width: 90%;
+  max-width: 40%;
   overflow: hidden;
 }
 
 .img-container img {
-  width: 100%;
+  width: 50%;
   height: auto;
-  display: block;
+  display: inline;
 }
 
 #img_me{
   align-self: center;
-  width: 100px;
+  height:auto;
 }
 
 
@@ -112,6 +113,10 @@ p{
     font-size: 19px;
     }
 
+    #aboutText{
+      font-size-adjust: inherit;
+    }
+
 
 /* Footer */
 .footer {
@@ -119,4 +124,49 @@ p{
   text-align: center;
   background: #ddd;
   font-size:medium; /* Adjust the font size for better visibility */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* EXPERIMENTAL */
+
+.popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popup-content {
+  background-color: white;
+  width: 50%;
+  max-width: 400px;
+  margin: 100px auto;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
 }
