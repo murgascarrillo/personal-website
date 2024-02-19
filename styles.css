@@ -17,7 +17,6 @@ body {
 .header {
   padding: 5vw;
   text-align: center;
-  align-items: center;
   background: #121d24;
   color: white;
 }
@@ -32,6 +31,8 @@ body {
   overflow: hidden;
   background-color: #121d24;
   color: white;
+  display: flex;
+  justify-content: center;
 }
 
 /* Style the navigation bar links */
@@ -40,14 +41,24 @@ body {
   display: block;
   color: white;
   text-align: center;
-  padding: 2vw;
+  padding: 1vw;
   text-decoration: wavy;
   font-size: 19px;
+  align-self: center;
 }
 
 /* Right-aligned link */
-.navbar a.right {
-  float: left; 
+
+#botonesCTA {
+  display: flex;
+}
+
+#botonesCTA a {
+  margin-right: 10px;
+}
+
+#botonesCTA .right {
+  margin-right: 0;
 }
 
 /* Change color on hover */
@@ -60,6 +71,7 @@ body {
 .row {
   display: flex;
   flex-wrap: wrap;
+  max-width: 100%;
 }
 
 /* Create two unequal columns that sit next to each other */
@@ -67,8 +79,8 @@ body {
 .side {
   max-width: 100%;
 
-  background-color: #f1f1f1;
-  padding: 2vw;
+  background-color: #f4f4f4;
+  padding: 3vw;
   font-size: auto;
 }
 
@@ -76,28 +88,22 @@ body {
 .main {
   flex: auto;
   background-color: white;
-  padding: 2vw;
+  padding: 3vw;
 }
 
-/* Ensure images always fit their containers and never occupy more than 50% of their container's width */
-.img-container {
-  align-self: center;
-  width: 100%;
-  max-width: 40%;
-  overflow: hidden;
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
 }
+
 
 .img-container img {
-  width: 50%;
+  width: 25%;
   height: auto;
-  display: inline;
-}
 
-#img_me{
-  align-self: center;
-  height:auto;
 }
-
 
 p{
   font-size: 25px;
@@ -114,9 +120,11 @@ p{
     }
 
     #aboutText{
-      font-size-adjust: inherit;
+      font-size: 19px;
     }
-
+    #anio{
+      font-size:10px;
+    }
 
 /* Footer */
 .footer {
