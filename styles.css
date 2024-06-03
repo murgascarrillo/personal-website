@@ -29,8 +29,8 @@ body {
 /* Style the top navigation bar */
 .navbar {
   overflow: hidden;
-  background-color: #121d24;
-  color: white;
+  background-color: #ebeff1;
+  color: black;
   display: flex;
   justify-content: center;
 }
@@ -39,7 +39,7 @@ body {
 .navbar a {
   float: left;
   display: block;
-  color: white;
+  color: black;
   text-align: center;
   padding: 1vw;
   text-decoration: wavy;
@@ -78,7 +78,7 @@ body {
 /* Sidebar/left column */
 .side {
   max-width: 100%;
-
+width: 100%;
   background-color: #f4f4f4;
   padding: 3vw;
   font-size: auto;
