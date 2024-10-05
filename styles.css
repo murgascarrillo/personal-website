@@ -6,6 +6,7 @@
 
 html{
   width: 100%;
+  display: block;
 }
 
 /* Style the body */
@@ -29,7 +30,7 @@ body {
 /* Style the top navigation bar */
 .navbar {
   overflow: hidden;
-  background-color: #ebeff1;
+  background-color: #121d24;
   color: black;
   display: flex;
   justify-content: center;
@@ -39,12 +40,16 @@ body {
 .navbar a {
   float: left;
   display: block;
-  color: black;
+  color: white;
   text-align: center;
   padding: 1vw;
   text-decoration: wavy;
   font-size: 19px;
   align-self: center;
+  border-style: solid;
+  border-color: #15232c;
+  border-radius: 1vw;
+  height: 100%;
 }
 
 /* Right-aligned link */
@@ -89,6 +94,10 @@ width: 100%;
   flex: auto;
   background-color: white;
   padding: 3vw;
+  border-color: black;
+  border-radius: 2vw;
+  border-style: solid;
+  margin: 2%;
 }
 
 .image-container {
@@ -100,7 +109,7 @@ width: 100%;
 
 
 .img-container img {
-  width: 25%;
+  width: 35%;
   height: auto;
 
 }
@@ -164,4 +173,14 @@ p{
   top: 10px;
   right: 10px;
   cursor: pointer;
+}
+
+h2{
+  text-align: center;
+}
+
+h3{
+  background-color: #121d24;
+  color: white;
+  padding: 2px;
 }
