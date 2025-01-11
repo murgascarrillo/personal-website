@@ -109,6 +109,12 @@ width: 100%;
 
 
 .img-container img {
+  width: 30%;
+  height: auto;
+  box-shadow: 2px 3px 5px 0px #717479;
+  border-radius: 5%
+}
+#img_me{
   width: 15%;
   height: auto;
   box-shadow: 2px 3px 5px 0px #717479;
