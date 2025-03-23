@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entry Cost</title>
+
+
+</head>
+<body>
+    <h1>Entry Cost </h1>
+    <h2>
+        Have you ever wondered how much value you would have to spend (Entry Cost) to achieve something at the WEB3?<br/>  I did.</h2>
+    <h3>Variables</h3>
+    <div>
+        <p><strong>Base Coin Value.</strong></p>
+        <div>
+            <span>How many native coins/tokens do you need to achieve it?</span>
+            <input id="basecoin" type="text"/>
+        </div>
+        <p><strong>Network Coin Value.</strong></p>
+        <div>
+            <span>If the case, how many network coins is the equivalent to 1 Base Coin?</span>
+            <input id="networkcoin" type="text"/>
+            <span>How many dollars ($USD) is it equivalent to? </span>
+            <input id="networkcoinInUSD" type="text"/>
+        </div>
+        
+        <p><strong>Local Coin Value.</strong></p>
+        <div>
+            <span>How many of your local coin is equivalent to 1 USD Dollar?</span>
+            <input id="localcoin" type="text"/>
+        </div>
+        <P>Click on the Button below to initiate the calculation!</P>
+        <button type="button" onclick="entrycostcalc()" >Calculate</button>
+        <p>The Entry Cost for you is <strong>$<span id="result">_____</span></strong> <span id="currency"> of your local currency.</span></p>
+    </div>
+
+    <script>
+        var basecoin= document.getElementById("basecoin");
+        basecoin.value=1;
+        
+        var networkcoin= document.getElementById("networkcoin");
+        networkcoin.value=1;
+        var networkcoinInUSD= document.getElementById("networkcoinInUSD");
+        networkcoinInUSD.value=1;
+        var localcoin= document.getElementById("localcoin");
+        localcoin.value=4000;
+        var result = document.getElementById("result");
+        var entrycostValue;
+        function entrycostcalc(){
+           Number(basecoin.value);
+           Number(localcoin.value);
+           Number(networkcoin.value);
+           Number(networkcoinInUSD.value);
+           
+           
+           entrycostValue =  basecoin.value*networkcoin.value*networkcoinInUSD.value*localcoin.value;
+           var parsedEntryCostValue = parseInt(entrycostValue)
+            document.getElementById("result").innerHTML = parsedEntryCostValue;
+        }
+        </script>
+</body>
+
+</script>
+</html>
