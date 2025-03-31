@@ -13,16 +13,16 @@
         Have you ever wondered how much value you would have to spend (Entry Cost) to achieve something at the WEB3?<br/>  I did.</h2>
     <h3>Variables</h3>
     <div>
-        <p><strong>Base Coin Value.</strong></p>
+        <p><strong>Base Token Value.</strong></p>
         <div>
-            <span>How many native coins/tokens do you need to achieve it?</span>
-            <input id="basecoin" type="text"/>
+            <span>How many native tokens do you need to achieve it?</span>
+            <input id="basetoken" type="text"/>
         </div>
         <p><strong>Network Coin Value.</strong></p>
         <div>
-            <span>If the case, how many network coins is the equivalent to 1 Base Coin?</span>
+            <span>How many network coins is the equivalent to 1 Base Token?</span>
             <input id="networkcoin" type="text"/>
-            <span>How many dollars ($USD) is it equivalent to? </span>
+            <span>How many dollars ($USD) is a Network Coin equivalent to? </span>
             <input id="networkcoinInUSD" type="text"/>
         </div>
         
@@ -37,8 +37,8 @@
     </div>
 
     <script>
-        var basecoin= document.getElementById("basecoin");
-        basecoin.value=1;
+        var basetoken= document.getElementById("basetoken");
+        basetoken.value=1;
         
         var networkcoin= document.getElementById("networkcoin");
         networkcoin.value=1;
@@ -49,13 +49,13 @@
         var result = document.getElementById("result");
         var entrycostValue;
         function entrycostcalc(){
-           Number(basecoin.value);
+           Number(basetoken.value);
            Number(localcoin.value);
            Number(networkcoin.value);
            Number(networkcoinInUSD.value);
            
            
-           entrycostValue =  basecoin.value*networkcoin.value*networkcoinInUSD.value*localcoin.value;
+           entrycostValue =  basetoken.value*networkcoin.value*networkcoinInUSD.value*localcoin.value;
            var parsedEntryCostValue = parseInt(entrycostValue)
             document.getElementById("result").innerHTML = parsedEntryCostValue;
         }
