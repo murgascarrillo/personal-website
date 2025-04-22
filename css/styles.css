@@ -105,6 +105,8 @@ width: 100%;
   justify-content: center;
   align-items: center;
   padding: 20px;
+  text-align: center;
+  border-radius: 20x
 }
 
 
@@ -112,13 +114,17 @@ width: 100%;
   width: 30%;
   height: auto;
   box-shadow: 2px 3px 5px 0px #717479;
-  border-radius: 5%
+  border-radius: 20px;
+}.bannerimg:hover{
+  box-shadow: 4px 6px 10px 2px #717479;
 }
 #img_me{
   width: 15%;
   height: auto;
   box-shadow: 2px 3px 5px 0px #717479;
-  border-radius: 50%
+  border-radius: 50%;
+}#img_me:hover{
+  box-shadow: 3px 4px 4px 1.4px #17b150;
 }
 
 p{
@@ -189,5 +195,10 @@ h2{
 h3{
   background-color: #121d24;
   color: white;
-  padding: 2px;
+  padding: 12px;
+  font-size: 20px;
+  border-radius: 20px;
+  text-align: center;
+}h3:hover{
+  background-color: #0b7b17;
 }
