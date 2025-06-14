@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculadora de Escrituración Notarial</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #f9f9f9;
+      color: #222;
+      padding: 1rem;
+    }
+
+    #contenedorPDF {
+  max-width: 650px;
+  margin: auto;
+  padding: 1rem;
+  background: white;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+    h1 {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 1rem;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 1rem;
+      margin-top: 0.3rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.2rem;
+    }
+
+    th, td {
+      padding: 0.6rem;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background-color: #eaeaea;
+    }
+
+    tfoot td {
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .total {
+      color: #003366;
+    }
+
+    #exportarBtn {
+      display: block;
+      margin: 2rem auto 0 auto;
+      padding: 0.8rem 1.5rem;
+      background-color: #003366;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    #exportarBtn:hover {
+      background-color: #005199;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="contenedorPDF">
+    <h1>Calculadora de Escrituración Notarial</h1>
+
+    <label for="valorVenta">Valor de venta del inmueble (COP):</label>
+    <input type="number" id="valorVenta" value="10000000" />
+
+    <label for="cantidadHojas">Cantidad de hojas (matriz + copias):</label>
+    <input type="number" id="cantidadHojas" value="49" />
+
+    <table>
+      <thead>
+        <tr>
+          <th>Concepto</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody id="resultados"></tbody>
+      <tfoot>
+        <tr>
+          <td>Total Escrituración</td>
+          <td id="total" class="total"></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <button id="exportarBtn" onclick="exportarPDF()">Exportar a PDF</button>
+
+  <script>
+    const valorVentaInput = document.getElementById("valorVenta");
+    const cantidadHojasInput = document.getElementById("cantidadHojas");
+    const resultadosBody = document.getElementById("resultados");
+    const totalDisplay = document.getElementById("total");
+
+    function formatoCOP(num) {
+      return new Intl.NumberFormat("es-CO", {
+        style: "currency",
+        currency: "COP",
+        minimumFractionDigits: 0,
+      }).format(num);
+    }
+
+    function calcular() {
+      const valorVenta = parseFloat(valorVentaInput.value) || 0;
+      const hojas = parseInt(cantidadHojasInput.value) || 0;
+      const costoHoja = 5300;
+      const costoHojas = hojas * costoHoja;
+      const iva = costoHojas * 0.19;
+
+      let derechos = 0;
+      if (valorVenta <= 246700) {
+        derechos = 29400;
+      } else {
+        derechos = 29400 + (valorVenta - 246700) * 0.003;
+      }
+
+      const retencion = valorVenta * 0.01;
+      const recaudo = 27600;
+      const total = Math.round(costoHojas + iva + derechos + retencion + recaudo);
+
+      const filas = [
+        ["Cantidad Hojas (Extensión y Protocolo)", hojas],
+        ["Costo hojas escritura", formatoCOP(costoHojas)],
+        ["Derechos Notariales", formatoCOP(derechos)],
+        ["IVA (19%)", formatoCOP(iva)],
+        ["Retención en la fuente (1%)", formatoCOP(retencion)],
+        ["Recaudo Sup. y Fondo", formatoCOP(recaudo)],
+      ];
+
+      resultadosBody.innerHTML = filas
+        .map(([concepto, valor]) => `<tr><td>${concepto}</td><td>${valor}</td></tr>`)
+        .join("");
+
+      totalDisplay.textContent = formatoCOP(total);
+    }
+
+async function exportarPDF() {
+  const element = document.getElementById("contenedorPDF");
+
+  // Renderizar como imagen optimizada
+  const canvas = await html2canvas(element, {
+    scale: 1.2, // Menor escala = menor tamaño
+    useCORS: true
+  });
+
+  const imgData = canvas.toDataURL("image/jpeg", 0.8); // JPEG con compresión 80%
+
+  const pdf = new jspdf.jsPDF({
+    orientation: "portrait",
+    unit: "pt",
+    format: "letter"
+  });
+
+  const pageWidth = pdf.internal.pageSize.getWidth();
+  const pageHeight = pdf.internal.pageSize.getHeight();
+
+  const margin = 20;
+  const availableWidth = pageWidth - margin * 2;
+
+  const imgProps = pdf.getImageProperties(imgData);
+  const imgWidth = availableWidth;
+  const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+
+  const finalHeight = Math.min(imgHeight, pageHeight - margin * 2);
+  const scale = finalHeight / imgHeight;
+
+  pdf.addImage(
+    imgData,
+    "JPEG",
+    margin,
+    margin,
+    imgWidth * scale,
+    imgHeight * scale
+  );
+
+  pdf.save("CalculoEscrituracion.pdf");
+}
+
+    valorVentaInput.addEventListener("input", calcular);
+    cantidadHojasInput.addEventListener("input", calcular);
+    calcular(); // ejecutar al inicio
+  </script>
+</body>
+</html>
+
+
