@@ -130,39 +130,40 @@
       }).format(num);
     }
 
-    function calcular() {
-      const valorVenta = parseFloat(valorVentaInput.value) || 0;
-      const hojas = parseInt(cantidadHojasInput.value) || 0;
-      const costoHoja = 5300;
-      const costoHojas = hojas * costoHoja;
-      const iva = costoHojas * 0.19;
+function calcular() {
+  const valorVenta = parseFloat(valorVentaInput.value) || 0;
+  const hojas = parseInt(cantidadHojasInput.value) || 0;
+  const costoHoja = 5300;
+  const costoHojas = hojas * costoHoja;
 
-      let derechos = 0;
-      if (valorVenta <= 246700) {
-        derechos = 29400;
-      } else {
-        derechos = 29400 + (valorVenta - 246700) * 0.003;
-      }
+  let derechos = 0;
+  if (valorVenta <= 246700) {
+    derechos = 29400;
+  } else {
+    derechos = 29400 + (valorVenta - 246700) * 0.003;
+  }
 
-      const retencion = valorVenta * 0.01;
-      const recaudo = 27600;
-      const total = Math.round(costoHojas + iva + derechos + retencion + recaudo);
+  const iva = (costoHojas + derechos) * 0.19;
+  const retencion = valorVenta * 0.01;
+  const recaudo = 27600;
+  const total = Math.round(costoHojas + derechos + iva + retencion + recaudo);
 
-      const filas = [
-        ["Cantidad Hojas (Extensión y Protocolo)", hojas],
-        ["Costo hojas escritura", formatoCOP(costoHojas)],
-        ["Derechos Notariales", formatoCOP(derechos)],
-        ["IVA (19%)", formatoCOP(iva)],
-        ["Retención en la fuente (1%)", formatoCOP(retencion)],
-        ["Recaudo Sup. y Fondo", formatoCOP(recaudo)],
-      ];
+  const filas = [
+    ["Cantidad Hojas (Extensión y Protocolo)", hojas],
+    ["Costo hojas escritura", formatoCOP(costoHojas)],
+    ["Derechos Notariales", formatoCOP(derechos)],
+    ["IVA (19%)", formatoCOP(iva)],
+    ["Retención en la fuente (1%)", formatoCOP(retencion)],
+    ["Recaudo Sup. y Fondo", formatoCOP(recaudo)],
+  ];
 
-      resultadosBody.innerHTML = filas
-        .map(([concepto, valor]) => `<tr><td>${concepto}</td><td>${valor}</td></tr>`)
-        .join("");
+  resultadosBody.innerHTML = filas
+    .map(([concepto, valor]) => `<tr><td>${concepto}</td><td>${valor}</td></tr>`)
+    .join("");
 
-      totalDisplay.textContent = formatoCOP(total);
-    }
+  totalDisplay.textContent = formatoCOP(total);
+}
+
 
 async function exportarPDF() {
   const element = document.getElementById("contenedorPDF");
