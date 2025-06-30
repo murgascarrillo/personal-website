@@ -71,6 +71,7 @@ ul.topnav li.icon-link a img {
 
 /* Submenú oculto por defecto */
 ul.topnav .dropdown-content {
+  list-style-type: none;
   display: none;
   position: absolute;
   background-color: #333;
@@ -245,5 +246,5 @@ h3{
   border-radius: 20px;
   text-align: center;
 }h3:hover{
-  background-color: #0b7b17;
+  background-color: #0a5712;
 }
