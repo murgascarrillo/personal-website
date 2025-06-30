@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <title>Calculadora de Escrituración Notarial</title>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calculadora de Escrituración Notarial</title>
+  <meta name="keywords" content="murgascarrillo, murgascarrillo colombia, pagina de Carlos Murgas Carrillo, pagina de murgas carrillo, sitio web de carlos murgas, calculadora, calculadora notarial,gastos notariales Colombia,costos escrituración notaría,liquidación notarial online,simulador gastos notaría,tarifas notariales actualizadas,cuánto cuesta una escritura,honorarios notaría Colombia,calculadora escrituración,costos compra venta inmueble notaría"/>
+  <meta name="author" content="Carlos Enrique Murgas Carrillo"/>
+   <meta name="copyright" content="Carlos Enrique Murgas Carrillo"/>
+       <meta name="robots" content="index,follow,archive,translate,imageindex"/>
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
@@ -152,27 +157,26 @@ function calcular() {
   }
 
   const subtotalActosSinCuantia = actosSinCuantia * valorActoSinCuantia;
-  const ivaActos = subtotalActosSinCuantia * 0.19;
-
-  const iva = (costoHojas + derechos) * 0.19;
+  const ivaActosSinCuantia = subtotalActosSinCuantia * 0.19;
+  const ivaDerechos = (costoHojas + derechos) * 0.19;
+  const ivaTotal = (ivaActosSinCuantia + ivaDerechos);
 
   const retencion = valorVenta * 0.01;
   const recaudo = 27600;
 
   const total = Math.round(
-    costoHojas + derechos + iva + retencion +
-    subtotalActosSinCuantia + ivaActos + recaudo
+    costoHojas + derechos + ivaTotal + retencion +
+    subtotalActosSinCuantia + recaudo
   );
 
   const filas = [
     ["Cantidad Hojas (Extensión y Protocolo)", hojas],
     ["Costo hojas escritura", formatoCOP(costoHojas)],
     ["Derechos Notariales", formatoCOP(derechos)],
-    ["IVA (19%) sobre hojas + derechos", formatoCOP(iva)],
+    ["Actos sin cuantía", formatoCOP(subtotalActosSinCuantia)],
+    ["IVA Total (19%) Derechos + Derechos Actos sin cuantía", formatoCOP(ivaTotal)],
     ["Retención en la fuente (1%)", formatoCOP(retencion)],
     ["Recaudo Sup. y Fondo", formatoCOP(recaudo)],
-    ["Actos sin cuantía", formatoCOP(subtotalActosSinCuantia)],
-    ["IVA (19%) sobre actos sin cuantía", formatoCOP(ivaActos)],
   ];
 
   resultadosBody.innerHTML = filas
@@ -230,6 +234,9 @@ async function exportarPDF() {
     actosSinCuantiaInput.addEventListener("input", calcular);
     calcular(); // ejecutar al inicio
   </script>
+      <a href="./index.html">
+        <img id="boton-retorno" style="width:50px;height:auto;margin:auto;padding:7px;display: list-item; box-shadow: 1.3px 1.3px 1.3px 0px #717479; border-radius: 50%;" src="images/murgascarrillo.webp"/>
+    </a>
 </body>
 </html>
 
