@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Calculadora Fecha Máxima (Ley 1755)</title>
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      background:#f6f7f9; color:#222; min-height:100vh;
+      display:flex;flex-direction: column; align-items:center; justify-content:center; padding:1rem;
+    }
+    .container {
+      width:100%; max-width:520px; background:#fff; border-radius:12px;
+      box-shadow:0 8px 30px rgba(16,24,40,0.06); padding:1.25rem; text-align:left;
+    }
+    h1 { font-size:1.05rem; margin-bottom:.25rem; color:#0f172a; }
+    p.lead { margin-bottom:0.9rem; color:#374151; font-size:.92rem; }
+    label { display:block; font-weight:600; color:#0f172a; margin-bottom:.4rem; }
+    .row { display:flex; gap:.75rem; align-items:center; margin-bottom:.75rem; }
+    input[type="date"] {
+      flex:1; padding:.6rem .8rem; border-radius:8px; border:1px solid #e6e8eb;
+      font-size:.95rem; background:#fff;
+    }
+    button {
+      padding:.65rem .9rem; border-radius:8px; border:none; background:#0b74ff;
+      color:#fff; font-weight:600; cursor:pointer; font-size:.95rem;
+    }
+    button:hover { background:#065fd6; }
+    .resultado { margin-top:.9rem; font-weight:700; color:#0fb02a; font-size:.98rem; }
+    .notice { margin-top:.6rem; font-size:.86rem; color:#6b7280; }
+    .adjust-note { margin-top:.6rem; padding:.6rem; background:#f1f5f9; border-radius:8px; font-size:.9rem; color:#0b1220; }
+    @media (max-width:420px){ .row{flex-direction:column;} button{width:100%} }
+  </style>
+</head>
+<body>
+  <main class="container" aria-live="polite">
+    <h1>Fecha máxima de respuesta</h1>
+    <p class="lead">Cómputo del término de respuesta a una petición según Ley 1755 de 2015 (Estatutaria de Petición, Colombia) — 15 días hábiles. No se cuenta el día de radicación.</p>
+
+    <label for="fechaInicio">Fecha de presentación:</label>
+    <div class="row">
+      <input id="fechaInicio" type="date" aria-label="Fecha de presentación" />
+      <button id="calcularBtn" type="button">Calcular</button>
+    </div>
+
+    <div id="resultado" class="resultado" role="status" aria-live="polite"></div>
+    <div id="adjustInfo" class="adjust-note" style="display:none;"></div>
+    <div class="notice">Nota: sábados, domingos y festivos no cuentan. Si la fecha (por defecto o seleccionada) cae en día inhábil, se ajusta al siguiente día hábil y se notifica.</div>
+  </main>
+
+  <script>
+    /********************************************************************
+     * Festivos nacionales Colombia (2025 - 2030)
+     * Formato: "YYYY-MM-DD": true
+     * Revisa/actualiza si necesitas confirmar con fuente oficial.
+     ********************************************************************/
+    const festivos = {
+      // 2025
+      "2025-01-01": true, "2025-01-06": true, "2025-03-24": true, "2025-04-17": true,
+      "2025-04-18": true, "2025-05-01": true, "2025-06-02": true, "2025-06-23": true,
+      "2025-06-30": true, "2025-07-20": true, "2025-08-07": true, "2025-08-18": true,
+      "2025-10-13": true, "2025-11-03": true, "2025-11-17": true, "2025-12-08": true,
+      "2025-12-25": true,
+      // 2026
+      "2026-01-01": true, "2026-01-12": true, "2026-03-23": true, "2026-04-02": true,
+      "2026-04-03": true, "2026-05-01": true, "2026-05-18": true, "2026-06-08": true,
+      "2026-06-15": true, "2026-07-20": true, "2026-08-07": true, "2026-08-17": true,
+      "2026-10-12": true, "2026-11-02": true, "2026-11-16": true, "2026-12-08": true,
+      "2026-12-25": true,
+      // 2027
+      "2027-01-01": true, "2027-01-11": true, "2027-03-22": true, "2027-03-25": true,
+      "2027-03-26": true, "2027-05-01": true, "2027-05-17": true, "2027-06-07": true,
+      "2027-06-14": true, "2027-07-20": true, "2027-08-07": true, "2027-08-16": true,
+      "2027-10-18": true, "2027-11-01": true, "2027-11-15": true, "2027-12-08": true,
+      "2027-12-25": true,
+      // 2028
+      "2028-01-01": true, "2028-01-10": true, "2028-03-20": true, "2028-04-13": true,
+      "2028-04-14": true, "2028-05-01": true, "2028-05-29": true, "2028-06-19": true,
+      "2028-06-26": true, "2028-07-20": true, "2028-08-07": true, "2028-08-21": true,
+      "2028-10-16": true, "2028-11-06": true, "2028-11-13": true, "2028-12-08": true,
+      "2028-12-25": true,
+      // 2029
+      "2029-01-01": true, "2029-01-08": true, "2029-03-19": true, "2029-03-29": true,
+      "2029-03-30": true, "2029-05-01": true, "2029-05-21": true, "2029-06-11": true,
+      "2029-06-18": true, "2029-07-20": true, "2029-08-07": true, "2029-08-20": true,
+      "2029-10-15": true, "2029-11-05": true, "2029-11-12": true, "2029-12-08": true,
+      "2029-12-25": true,
+      // 2030
+      "2030-01-01": true, "2030-01-07": true, "2030-03-25": true, "2030-04-18": true,
+      "2030-04-19": true, "2030-05-01": true, "2030-06-03": true, "2030-06-24": true,
+      "2030-07-01": true, "2030-07-20": true, "2030-08-07": true, "2030-08-19": true,
+      "2030-10-14": true, "2030-11-04": true, "2030-11-18": true, "2030-12-08": true,
+      "2030-12-25": true
+    };
+
+    /* ---------- utilidades de fecha (local) ---------- */
+    function formatDateLocalYMD(date) {
+      const y = date.getFullYear();
+      const m = String(date.getMonth() + 1).padStart(2, "0");
+      const d = String(date.getDate()).padStart(2, "0");
+      return `${y}-${m}-${d}`;
+    }
+
+    function parseLocalYMD(str) {
+      // str: "YYYY-MM-DD"
+      const [y, m, d] = str.split("-");
+      return new Date(Number(y), Number(m) - 1, Number(d));
+    }
+
+    function isHolidayByDate(date) {
+      return !!festivos[ formatDateLocalYMD(date) ];
+    }
+
+    function isBusinessDay(date) {
+      const dow = date.getDay();
+      if (dow === 0 || dow === 6) return false;
+      return !isHolidayByDate(date);
+    }
+
+    // Devuelve el siguiente día hábil *estricto* (mayor que la fecha dada)
+    function nextBusinessDayAfter(date) {
+      const d = new Date(date);
+      d.setDate(d.getDate() + 1);
+      while (!isBusinessDay(d)) {
+        d.setDate(d.getDate() + 1);
+      }
+      return d;
+    }
+
+    // Suma N días hábiles incluyendo el día de 'start' si es hábil.
+    // Es decir, si start es día hábil y n=1 -> devuelve start.
+    function addBusinessDaysInclusive(start, n) {
+      const d = new Date(start);
+      let counted = 0;
+      while (counted < n) {
+        if (isBusinessDay(d)) counted++;
+        if (counted === n) break;
+        d.setDate(d.getDate() + 1);
+      }
+      return d;
+    }
+
+    /* ---------- inicialización: fecha por defecto = HOY (si hoy inhábil -> mover al siguiente hábil) ---------- */
+    document.addEventListener("DOMContentLoaded", () => {
+      const input = document.getElementById("fechaInicio");
+      const adjustInfo = document.getElementById("adjustInfo");
+
+      const now = new Date(); // fecha local
+      const hoyKey = formatDateLocalYMD(now);
+
+      let initial = new Date(now);
+      let adjusted = false;
+      if (!isBusinessDay(now)) {
+        // sólo aplicar esta corrección cuando HOY sea inhábil (regla solicitada)
+        initial = nextBusinessDayAfter(now);
+        adjusted = true;
+      }
+      input.value = formatDateLocalYMD(initial);
+
+      if (adjusted) {
+        adjustInfo.style.display = "block";
+        adjustInfo.innerHTML = `<strong>Nota:</strong> La fecha predeterminada (hoy) era inhábil y se ajustó a <strong>${initial.toLocaleDateString("es-CO")}</strong>.`;
+      } else {
+        adjustInfo.style.display = "none";
+      }
+    });
+
+    /* ---------- cálculo principal ---------- */
+    document.getElementById("calcularBtn").addEventListener("click", () => {
+      const input = document.getElementById("fechaInicio");
+      const raw = input.value;
+      const resultado = document.getElementById("resultado");
+      const adjustInfo = document.getElementById("adjustInfo");
+
+      resultado.textContent = "";
+      adjustInfo.style.display = "none";
+      adjustInfo.innerHTML = "";
+
+      if (!raw) {
+        resultado.textContent = "⚠️ Por favor selecciona una fecha.";
+        return;
+      }
+
+      // Interpretar la fecha seleccionada como fecha local (evita toISOString/UTC)
+      let seleccion = parseLocalYMD(raw);
+
+      // 1) Si el usuario seleccionó una fecha inhábil, CORREGIRLA automáticamente al siguiente hábil (A)
+      let radicacion = new Date(seleccion);
+      let wasAdjustedManual = false;
+      if (!isBusinessDay(seleccion)) {
+        radicacion = nextBusinessDayAfter(seleccion);
+        wasAdjustedManual = true;
+        // reflejar ajuste en el input (auto-corrección)
+        input.value = formatDateLocalYMD(radicacion);
+      }
+
+      // 2) El cómputo SIEMPRE inicia el día hábil siguiente a la fecha de radicación
+      const inicioComputo = nextBusinessDayAfter(radicacion);
+
+      // 3) Sumar 15 días hábiles contándose desde 'inicioComputo' INCLUSIVE
+      const plazoDias = 15;
+      const fechaLimite = addBusinessDaysInclusive(inicioComputo, plazoDias);
+
+      // 4) Mostrar resultado y, si hubo ajuste, notificarlo (B)
+      let html = "";
+      if (wasAdjustedManual) {
+        html += `La fecha seleccionada <strong>${seleccion.toLocaleDateString("es-CO")}</strong> cayó en día inhábil y fue ajustada a <strong>${radicacion.toLocaleDateString("es-CO")}</strong>.<br>`;
+      }
+      // If input was default-adjusted earlier, that message already shown; but still show start/inicio:
+      html += `Inicio del cómputo (primer día hábil contado): <strong>${inicioComputo.toLocaleDateString("es-CO")}</strong>.<br>`;
+      html += `📅 <strong>Fecha máxima de respuesta:</strong> <strong>${fechaLimite.toLocaleDateString("es-CO")}</strong>.`;
+
+      resultado.innerHTML = html;
+
+      // Also show short adjustInfo if manual adjustment happened
+      if (wasAdjustedManual) {
+        adjustInfo.style.display = "block";
+        adjustInfo.innerHTML = `Se ajustó la radicación a <strong>${radicacion.toLocaleDateString("es-CO")}</strong> porque la fecha original no era hábil.`;
+      }
+    });
+  </script>
+   <div style="display: block;"><a href="./index.html">
+        <img id="boton-retorno" style="width:50px;height:auto;margin:auto;padding:7px;display: list-item; box-shadow: 1.3px 1.3px 1.3px 0px #717479; border-radius: 50%;" src="images/murgascarrillo.webp"/>
+    </a></div>
+</body>
+</html>

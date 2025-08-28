@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Incremento Porcentual y Tasa Anual</title>
+  <style>
+    body { font-family: sans-serif; padding: 2em; background: #f4f4f4; }
+    label, input { display: block; margin: 0.5em 0; }
+    button { margin-top: 1em; }
+    table {
+      margin-top: 2em;
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 500px;
+      background: #fff;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 0.75em;
+      text-align: left;
+    }
+    th {
+      background-color: #eee;
+    }
+  </style>
+</head>
+<body>
+  <h2>Calculadora de Incremento porcentual Anual en Canon de Arrendamiento con fechas y años transcurridos arbitrarios.</h2>
+
+
+  <p>Cuánto es el valor del canon en el año inicial?</p>
+  <label>Valor Inicial:
+    <input type="number" id="inicial" value="1" step="any">
+  </label>
+  <p>Cuánto es el valor del canon en el año final?</p>
+  <label>Valor Final:
+    <input type="number" id="final" value="12" step="any">
+  </label>
+  <p>¿Cuántos años han transcurrido entre el año inicial y el año final?</p>
+  <label>Años transcurridos:
+    <input type="number" id="anios" value="21">
+  </label>
+  <button onclick="calcular()">Calcular</button>
+
+  <table id="tabla" style="display:none;">
+    <thead>
+      <tr>
+        <th>Concepto</th>
+        <th>Valor</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Valor Inicial</td><td id="valorInicial"></td></tr>
+      <tr><td>Valor Final</td><td id="valorFinal"></td></tr>
+      <tr><td>Años Transcurridos</td><td id="aniosTranscurridos"></td></tr>
+      <tr><td>Incremento Porcentual Total</td><td id="incrementoPorcentual"></td></tr>
+      <tr><td>Tasa Promedio Anual de Crecimiento</td><td id="tasaAnual"></td></tr>
+    </tbody>
+  </table>
+
+  <script>
+    function calcular() {
+      const inicial = parseFloat(document.getElementById('inicial').value);
+      const final = parseFloat(document.getElementById('final').value);
+      const anios = parseInt(document.getElementById('anios').value);
+
+      if (inicial === 0 || anios <= 0) {
+        alert("Verifica que los valores sean válidos.");
+        return;
+      }
+
+      const incremento = ((final - inicial) / inicial) * 100;
+      const tasaAnual = (Math.pow(final / inicial, 1 / anios) - 1) * 100;
+
+      document.getElementById('valorInicial').innerText = inicial.toFixed(2);
+      document.getElementById('valorFinal').innerText = final.toFixed(2);
+      document.getElementById('aniosTranscurridos').innerText = anios;
+      document.getElementById('incrementoPorcentual').innerText = incremento.toFixed(2) + " %";
+      document.getElementById('tasaAnual').innerText = tasaAnual.toFixed(2) + " %";
+
+      document.getElementById('tabla').style.display = 'table';
+    }
+  </script>
+</body>
+</html>
