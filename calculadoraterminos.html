@@ -16,11 +16,11 @@
       width:100%; max-width:520px; background:#fff; border-radius:12px;
       box-shadow:0 8px 30px rgba(16,24,40,0.06); padding:1.25rem; text-align:left;
     }
-    h1 { font-size:1.05rem; margin-bottom:.25rem; color:#0f172a; }
+    h1 { font-size:1.05rem; margin-bottom:.25rem; color:#0f172a;text-align:center; }
     p.lead { margin-bottom:0.9rem; color:#374151; font-size:.92rem; }
     label { display:block; font-weight:600; color:#0f172a; margin-bottom:.4rem; }
     .row { display:flex; gap:.75rem; align-items:center; margin-bottom:.75rem; }
-    input[type="date"] {
+    input[type="date"], input[type="number"] {
       flex:1; padding:.6rem .8rem; border-radius:8px; border:1px solid #e6e8eb;
       font-size:.95rem; background:#fff;
     }
@@ -37,18 +37,23 @@
 </head>
 <body>
   <main class="container" aria-live="polite">
-    <h1>Fecha máxima de respuesta</h1>
-    <p class="lead">Cómputo del término de respuesta a una petición según Ley 1755 de 2015 (Estatutaria de Petición, Colombia) — 15 días hábiles. No se cuenta el día de radicación.</p>
+    <h1>Calculadora de Términos Procesales</h1>
+    <p class="lead">Utilizalo para calcular la fecha máxima (término) de respuesta o tramite de una petición o acto procesal según Ley 1755 de 2015 (Estatutaria de Petición, Colombia) y la Ley 1564 de 2012 (Código General del Proceso, Colombia).</p>
 
     <label for="fechaInicio">Fecha de presentación:</label>
     <div class="row">
       <input id="fechaInicio" type="date" aria-label="Fecha de presentación" />
+    </div>
+
+    <label for="terminoDias">Término en días hábiles (opcional, por defecto 15):</label>
+    <div class="row">
+      <input id="terminoDias" type="number" min="1" placeholder="15" aria-label="Término en días hábiles" />
       <button id="calcularBtn" type="button">Calcular</button>
     </div>
 
     <div id="resultado" class="resultado" role="status" aria-live="polite"></div>
     <div id="adjustInfo" class="adjust-note" style="display:none;"></div>
-    <div class="notice">Nota: sábados, domingos y festivos no cuentan. Si la fecha (por defecto o seleccionada) cae en día inhábil, se ajusta al siguiente día hábil y se notifica.</div>
+    <div class="notice">Notas:<br/>Sábados, domingos y festivos no cuentan.<br/>Si la fecha (por defecto o seleccionada) cae en día inhábil, se ajusta al siguiente día hábil.<br/>El término general para la respuesta de peticiones es de quince (15) días hábiles.<br/>No se cuenta el día de radicación.</div>
   </main>
 
   <script>
@@ -105,7 +110,6 @@
     }
 
     function parseLocalYMD(str) {
-      // str: "YYYY-MM-DD"
       const [y, m, d] = str.split("-");
       return new Date(Number(y), Number(m) - 1, Number(d));
     }
@@ -120,7 +124,6 @@
       return !isHolidayByDate(date);
     }
 
-    // Devuelve el siguiente día hábil *estricto* (mayor que la fecha dada)
     function nextBusinessDayAfter(date) {
       const d = new Date(date);
       d.setDate(d.getDate() + 1);
@@ -130,8 +133,6 @@
       return d;
     }
 
-    // Suma N días hábiles incluyendo el día de 'start' si es hábil.
-    // Es decir, si start es día hábil y n=1 -> devuelve start.
     function addBusinessDaysInclusive(start, n) {
       const d = new Date(start);
       let counted = 0;
@@ -143,18 +144,16 @@
       return d;
     }
 
-    /* ---------- inicialización: fecha por defecto = HOY (si hoy inhábil -> mover al siguiente hábil) ---------- */
     document.addEventListener("DOMContentLoaded", () => {
       const input = document.getElementById("fechaInicio");
       const adjustInfo = document.getElementById("adjustInfo");
 
-      const now = new Date(); // fecha local
+      const now = new Date();
       const hoyKey = formatDateLocalYMD(now);
 
       let initial = new Date(now);
       let adjusted = false;
       if (!isBusinessDay(now)) {
-        // sólo aplicar esta corrección cuando HOY sea inhábil (regla solicitada)
         initial = nextBusinessDayAfter(now);
         adjusted = true;
       }
@@ -168,12 +167,12 @@
       }
     });
 
-    /* ---------- cálculo principal ---------- */
     document.getElementById("calcularBtn").addEventListener("click", () => {
       const input = document.getElementById("fechaInicio");
       const raw = input.value;
       const resultado = document.getElementById("resultado");
       const adjustInfo = document.getElementById("adjustInfo");
+      const terminoInput = document.getElementById("terminoDias");
 
       resultado.textContent = "";
       adjustInfo.style.display = "none";
@@ -184,38 +183,34 @@
         return;
       }
 
-      // Interpretar la fecha seleccionada como fecha local (evita toISOString/UTC)
       let seleccion = parseLocalYMD(raw);
 
-      // 1) Si el usuario seleccionó una fecha inhábil, CORREGIRLA automáticamente al siguiente hábil (A)
       let radicacion = new Date(seleccion);
       let wasAdjustedManual = false;
       if (!isBusinessDay(seleccion)) {
         radicacion = nextBusinessDayAfter(seleccion);
         wasAdjustedManual = true;
-        // reflejar ajuste en el input (auto-corrección)
         input.value = formatDateLocalYMD(radicacion);
       }
 
-      // 2) El cómputo SIEMPRE inicia el día hábil siguiente a la fecha de radicación
       const inicioComputo = nextBusinessDayAfter(radicacion);
 
-      // 3) Sumar 15 días hábiles contándose desde 'inicioComputo' INCLUSIVE
-      const plazoDias = 15;
+      let plazoDias = parseInt(terminoInput.value, 10);
+      if (isNaN(plazoDias) || plazoDias <= 0) {
+        plazoDias = 15; // por defecto
+      }
+
       const fechaLimite = addBusinessDaysInclusive(inicioComputo, plazoDias);
 
-      // 4) Mostrar resultado y, si hubo ajuste, notificarlo (B)
       let html = "";
       if (wasAdjustedManual) {
         html += `La fecha seleccionada <strong>${seleccion.toLocaleDateString("es-CO")}</strong> cayó en día inhábil y fue ajustada a <strong>${radicacion.toLocaleDateString("es-CO")}</strong>.<br>`;
       }
-      // If input was default-adjusted earlier, that message already shown; but still show start/inicio:
       html += `Inicio del cómputo (primer día hábil contado): <strong>${inicioComputo.toLocaleDateString("es-CO")}</strong>.<br>`;
-      html += `📅 <strong>Fecha máxima de respuesta:</strong> <strong>${fechaLimite.toLocaleDateString("es-CO")}</strong>.`;
+      html += `📅 <strong>Fecha máxima de respuesta (${plazoDias} días hábiles):</strong> <strong>${fechaLimite.toLocaleDateString("es-CO")}</strong>.`;
 
       resultado.innerHTML = html;
 
-      // Also show short adjustInfo if manual adjustment happened
       if (wasAdjustedManual) {
         adjustInfo.style.display = "block";
         adjustInfo.innerHTML = `Se ajustó la radicación a <strong>${radicacion.toLocaleDateString("es-CO")}</strong> porque la fecha original no era hábil.`;
