@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Conversor APA desde URL</title>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+      color: #333;
+      min-height: 100vh;
+    }
+    header {
+      background: linear-gradient(90deg, #004e92, #000428);
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+      border-bottom-left-radius: 50% 20%;
+      border-bottom-right-radius: 50% 20%;
+    }
+    .apa-output {
+      font-style: italic;
+      background: #fff;
+      padding: 16px;
+      border-radius: 10px;
+      border: 2px solid #ddd;
+      word-break: break-word;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .btn-primary {
+      background: linear-gradient(90deg, #0072ff, #00c6ff);
+      color: white;
+      transition: all 0.3s;
+    }
+    .btn-primary:hover {
+      background: linear-gradient(90deg, #00c6ff, #0072ff);
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9em;
+      color: #777;
+    }
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.6em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Conversor APA desde URL</h1>
+    <p>Convierte enlaces web al formato APA (7ª edición)</p>
+  </header>
+
+  <div class="w3-content w3-padding-32" style="max-width:650px">
+    <div class="w3-card w3-round-xlarge w3-white w3-padding-large w3-animate-opacity">
+      <label for="urlInput" class="w3-text-black"><b>Enlace (URL):</b></label>
+      <input class="w3-input w3-border w3-round-large" type="url" id="urlInput" placeholder="https://ejemplo.com/articulo" required>
+      <button class="w3-button w3-round-xlarge w3-margin-top w3-block btn-primary" onclick="convertirAPA()">Convertir a APA</button>
+    </div>
+
+    <div id="resultado" class="w3-margin-top w3-animate-opacity"></div>
+  </div>
+
+  <footer>
+    <p>Desarrollado con ❤️ y W3.CSS | Adaptado para móviles</p>
+  </footer>
+
+  <script>
+    async function convertirAPA() {
+      const url = document.getElementById("urlInput").value.trim();
+      const resultadoDiv = document.getElementById("resultado");
+      resultadoDiv.innerHTML = "";
+
+      if (!url) {
+        resultadoDiv.innerHTML = '<div class="w3-panel w3-pale-red w3-border w3-round">Por favor ingresa una URL válida.</div>';
+        return;
+      }
+
+      resultadoDiv.innerHTML = '<div class="w3-center w3-padding"><div class="w3-spin w3-xxlarge w3-text-blue">⟳</div><p>Obteniendo información...</p></div>';
+
+      try {
+        const proxy = "https://api.allorigins.win/get?url=" + encodeURIComponent(url);
+        const res = await fetch(proxy);
+        const data = await res.json();
+
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(data.contents, "text/html");
+
+        const titulo = doc.querySelector("title")?.innerText || "Sin título";
+        const autor = doc.querySelector('meta[name="author"]')?.content || "Autor desconocido";
+        const sitio = new URL(url).hostname.replace("www.", "");
+        const fechaAcceso = new Date().toLocaleDateString("es-CO", {
+          year: "numeric",
+          month: "long",
+          day: "numeric"
+        });
+
+        const citaAPA = `${autor}. (${fechaAcceso}). <i>${titulo}</i>. ${sitio}. ${url}`;
+
+        resultadoDiv.innerHTML = `
+          <div class="w3-card w3-white w3-round-xlarge w3-padding-large w3-margin-top">
+            <h4 class="w3-text-dark-grey">Referencia en formato APA:</h4>
+            <div class="apa-output" id="apaText">${citaAPA}</div>
+            <button class="w3-button w3-small w3-margin-top btn-primary w3-round-large" onclick="copiarAPA()">📋 Copiar cita</button>
+          </div>
+        `;
+      } catch (error) {
+        console.error(error);
+        resultadoDiv.innerHTML = `
+          <div class="w3-panel w3-pale-red w3-border w3-round">
+            No fue posible obtener los datos de la página. Verifica que la URL sea pública.
+          </div>`;
+      }
+    }
+
+    function copiarAPA() {
+      const text = document.getElementById("apaText").innerText;
+      navigator.clipboard.writeText(text);
+      const msg = document.createElement("div");
+      msg.className = "w3-panel w3-pale-green w3-round w3-animate-opacity w3-center";
+      msg.innerHTML = "Referencia copiada al portapapeles ✅";
+      document.getElementById("resultado").appendChild(msg);
+      setTimeout(() => msg.remove(), 2000);
+    }
+  </script>
+
+</body>
+</html>
