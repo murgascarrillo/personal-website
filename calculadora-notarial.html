@@ -165,23 +165,24 @@ function calcular() {
 
   const retencion = valorVenta * 0.01;
   let recaudo = 28900; // Valor base para inmuebles hasta 100 millones.
-  if (valorVenta > 100000000) {
-    recaudo = 43700;
-  }
-  if (valorVenta > 300000000){
-    recaudo = 52700;
-  }
-   if (valorVenta > 500000000){
-    recaudo = 71900;
-  }
-   if (valorVenta > 1000000000){
-    recaudo = 84800;
-  }
-   if (valorVenta > 1500000000){
-    recaudo = 96400;
-  }
-  else {
-    recaudo = 28900;
+  switch (true) {
+    case valorVenta > 1500000000:
+      recaudo = 96400;
+      break;
+    case valorVenta > 1000000000:
+      recaudo = 84800;
+      break;
+    case valorVenta > 500000000:
+      recaudo = 71900;
+      break;
+    case valorVenta > 300000000:
+      recaudo = 52700;
+      break;
+    case valorVenta > 100000000:
+      recaudo = 43700;
+      break;
+    default:
+      recaudo = 28900;
   }
 
   const total = Math.round(
