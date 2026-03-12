@@ -95,7 +95,9 @@
 
   <div id="contenedorPDF">
     <h1>Calculadora de Escrituración Notarial</h1>
-
+    <p>Calcula los gastos asociados a la escrituración notarial en Colombia</p>
+    <p><em>Nota: Esta calculadora es una herramienta de referencia y no reemplaza la <a href="https://wa.me/573017673013/?text=Hola,%20quiero%20escriturar.">asesoría profesional</a>. Los costos pueden variar según la notaría y la ubicación*.</em></a></p>
+    <h3>Compraventa de Bien Inmueble</h3>
     <label for="valorVenta">Valor de venta del inmueble (COP):</label>
     <input type="number" id="valorVenta" value="10000000" />
 
@@ -144,16 +146,16 @@ function calcular() {
   const hojas = parseInt(cantidadHojasInput.value) || 0;
   const actosSinCuantia = parseInt(actosSinCuantiaInput.value) || 0;
 
-  const costoHoja = 5300;
-  const valorActoSinCuantia = 86200;
+  const costoHoja = 5600;
+  const valorActoSinCuantia = 90600;
 
   const costoHojas = hojas * costoHoja;
 
   let derechos = 0;
-  if (valorVenta <= 246700) {
-    derechos = 29400;
+  if (valorVenta <= 259300) {
+    derechos = 30900;
   } else {
-    derechos = 29400 + (valorVenta - 246700) * 0.003;
+    derechos = 30900 + (valorVenta - 259300) * 0.003;
   }
 
   const subtotalActosSinCuantia = actosSinCuantia * valorActoSinCuantia;
@@ -162,7 +164,7 @@ function calcular() {
   const ivaTotal = (ivaActosSinCuantia + ivaDerechos);
 
   const retencion = valorVenta * 0.01;
-  const recaudo = 27600;
+  const recaudo = 28900;
 
   const total = Math.round(
     costoHojas + derechos + ivaTotal + retencion +
