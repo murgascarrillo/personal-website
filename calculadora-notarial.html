@@ -164,7 +164,7 @@ function calcular() {
   const ivaTotal = (ivaActosSinCuantia + ivaDerechos);
 
   const retencion = valorVenta * 0.01;
-  const recaudo = 28900;
+  var recaudo = 28900; // Valor base para inmuebles hasta 100 millones.
   if (valorVenta > 100000000) {
     recaudo = 43700;
   }
@@ -180,7 +180,7 @@ function calcular() {
    if (valorVenta > 1500000000){
     recaudo = 96400;
   }
-  else{
+  else {
     recaudo = 28900;
   }
 
