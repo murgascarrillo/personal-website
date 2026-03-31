@@ -33,6 +33,9 @@
     .notice { margin-top:.6rem; font-size:.86rem; color:#6b7280; }
     .adjust-note { margin-top:.6rem; padding:.6rem; background:#f1f5f9; border-radius:8px; font-size:.9rem; color:#0b1220; }
     @media (max-width:420px){ .row{flex-direction:column;} button{width:100%} }
+    footer { background-color: #000000; color: white; padding: 20px;text-align: center;  }
+    footer ul { display: flex;flex-direction: column; gap: 10px;    margin-top: 10px;}
+    footer ul li a { color: #b2d1a9; font-weight: 600;  }
   </style>
 </head>
 <body>
@@ -217,8 +220,16 @@
       }
     });
   </script>
-  <div style="display: block;"><a href="./index.html">Conoce más en: 
+  <footer class="footer">
+    
+    <p>&copy; 2026,  MurgasCarrillo.</p>
+    <ul>
+      <li><a href="#">Política de Privacidad</a></li>
+      <li><a href="#">Términos y Condiciones</a></li>
+      
+    </ul>
+      <p>Conoce más en:</p> 
         <img id="boton-retorno" style="width:50px;height:auto;margin:auto;padding:7px;display: list-item; box-shadow: 1.3px 1.3px 1.3px 0px #717479; border-radius: 50%;" src="images/murgascarrillo.webp"/>
-    </a></div>
+        </footer>
 </body>
 </html>
