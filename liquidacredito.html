@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
   <title>Liquidadora de Créditos Judiciales (y extrajudiciales también)</title>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="keywords" content="murgascarrillo, murgascarrillo colombia, pagina de Carlos Murgas Carrillo, pagina de murgas carrillo, sitio web de carlos murgas, calculadora, liquidacion creditos judiciales, liquidacion creditos extrajudiciales, liquidacréditos, liquidación de créditos, liquidar credito juzgado, juzgado liquidación de credito, juzgado liquidacion credito, liquidar credito juzgado, liquidar credito proceso judicial"/>
@@ -73,16 +74,38 @@
     .total {
       color: #003366;
     }
-
+    .footer { background-color: #000000; color: white; padding: 20px;text-align: center;  }
+    .footer ul { display: flex;flex-direction: column; gap: 10px;    margin-top: 10px;}
+    .footer ul li a { color: #b2d1a9; font-weight: 600;  }
 
   </style>
 </head>
 <body>
 
+    <div class="w3-bar w3-white w3-border-bottom">
+  <a href="./index.html" class="w3-bar-item w3-button">Inicio</a>
+  <a href="#portafolio" class="w3-bar-item w3-button">Portafolio</a>
+  <div class="w3-dropdown-hover">
+    <button class="w3-button">Calculadoras ▾</button>
+    <div class="w3-dropdown-content w3-bar-block w3-card-4">
+      <a href="./entry-cost.html" class="w3-bar-item w3-button">Costo de Entrada</a>
+      <a href="./calculadora-notarial.html" class="w3-bar-item w3-button">Gastos Notariales</a>
+      <a href="./calculadora-terminos.html" class="w3-bar-item w3-button">Términos Procesales</a>
+      <a href="./liquidacredito.html" class="w3-bar-item w3-button">Liquidación de Crédito</a>
+    </div>
+  </div>
+  <a href="./conclave.html" class="w3-bar-item w3-button">Soluciones con abogado</a>
+  <a href="https://wa.me/573017673013/?text=Hola.%20Vengo%20desde%20murgascarrillo.com." class="w3-bar-item w3-button w3-right" target="_blank">
+      <img src="images/icon_whatsapp.webp" class="w3-round w3-image zoom" style="height:20px" alt="Icono Whatsapp" />
+    </a>
+  <a href="#contacto" class="w3-bar-item w3-button w3-right">Contacto</a>
+</div>
+
+
   <div id="contenedorPDF">
     <h1>Liquidadora de Créditos Judiciales (y extrajudiciales también)</h1>
     <p>Calcula los gastos asociados a la liquidación de créditos en Colombia</p>
-    <p><em>Nota: Esta calculadora es una herramienta de referencia y no reemplaza la <a href="https://wa.me/573017673013/?text=Hola,%20quiero%20liquidar%20un%20crédito.">asesoría profesional</a>. Los costos pueden variar según la notaría y la ubicación*.</em></a></p>
+    <p><em>Nota: Esta calculadora es una herramienta de referencia y no reemplaza la <a href="https://wa.me/573017673013/?text=Hola,%20quiero%20liquidar%20un%20crédito.">asesoría profesional</a>.</em></a></p>
     <h3>Liquidación de Créditos</h3>
     <label for="valorCredito">Valor del crédito (en pesos colombianos - COP):</label>
     <input type="number" id="valorCredito" value="1000000" />
@@ -95,6 +118,9 @@
 
     <label for="diaPrestamo">Día del préstamo</label>
     <input type="date" id="diaPrestamo" value="2026-01-01" />
+
+    <label for="diaFechaMaximaPago">Día de la fecha máxima de pago sin mora</label>
+    <input type="date" id="diaFechaMaximaPago" value="2026-01-31" />
 
     <label for="diaLiquidacion">Día de la liquidación</label>
     <input type="date" id="diaLiquidacion" value="2026-06-01" />
@@ -121,6 +147,7 @@
     const interesCorrienteInput = document.getElementById("interesCorriente");
     const interesMoratorioInput = document.getElementById("interesMoratorio");
     const diaPrestamoInput = document.getElementById("diaPrestamo");
+    const diaFechaMaximaPagoInput = document.getElementById("diaFechaMaximaPago");
     const diaLiquidacionInput = document.getElementById("diaLiquidacion");
     const resultadosBody  = document.getElementById("resultados");
     const totalDisplay = document.getElementById("total");
@@ -139,15 +166,19 @@ function calcular() {
   const interesMoratorio = parseFloat(interesMoratorioInput.value) || 0;
 
   const diaPrestamo = new Date(diaPrestamoInput.value);
+  const diaFechaMaximaPago = new Date(diaFechaMaximaPagoInput.value);
   const diaLiquidacion = new Date(diaLiquidacionInput.value);
-  const diasTranscurridos = Math.ceil((diaLiquidacion - diaPrestamo) / (1000 * 60 * 60 * 24)); 
-const interesCorrienteTotal = (valorCredito * interesCorriente / 100) * (diasTranscurridos/30);
-const interesMoratorioTotal = (valorCredito * interesMoratorio / 100) * (diasTranscurridos/30);
+  const diasTranscurridosSinMora = Math.ceil((diaFechaMaximaPago - diaPrestamo) / (1000 * 60 * 60 * 24));
+  const diasTranscurridosConMora = Math.ceil((diaLiquidacion - diaFechaMaximaPago) / (1000 * 60 * 60 * 24));
+const interesCorrienteTotal = (valorCredito * interesCorriente / 100) * (diasTranscurridosSinMora/30);
+const interesMoratorioTotal = (valorCredito * interesMoratorio / 100) * (diasTranscurridosConMora/30);
 const total = Math.round(valorCredito + interesCorrienteTotal + interesMoratorioTotal);
 
   const filas = [
     ["Valor del crédito", formatoCOP(valorCredito)],
-    ["Días transcurridos", diasTranscurridos],
+    ["Fecha máxima de pago", diaFechaMaximaPago.toLocaleDateString("es-CO")],
+    ["Días transcurridos hasta fecha máxima de pago sin mora", diasTranscurridosSinMora],
+    ["Días transcurridos con mora", diasTranscurridosConMora],
     ["Interés Corriente", formatoCOP(interesCorrienteTotal)],
     ["Interés Moratorio", formatoCOP(interesMoratorioTotal)],
     ["Total Liquidación", formatoCOP(total)]
@@ -164,6 +195,7 @@ valorCreditoInput.addEventListener("input", calcular);
 interesCorrienteInput.addEventListener("input", calcular);
 interesMoratorioInput.addEventListener("input", calcular);
 diaPrestamoInput.addEventListener("change", calcular);
+diaFechaMaximaPagoInput.addEventListener("change", calcular);
 diaLiquidacionInput.addEventListener("change", calcular);
 calcular(); // ejecutar al inicio 
   </script>
