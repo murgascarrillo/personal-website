@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <title>Liquidadora de Créditos Judiciales (y extrajudiciales también)</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="murgascarrillo, murgascarrillo colombia, pagina de Carlos Murgas Carrillo, pagina de murgas carrillo, sitio web de carlos murgas, calculadora, liquidacion creditos judiciales, liquidacion creditos extrajudiciales, liquidacréditos, liquidación de créditos, liquidar credito juzgado, juzgado liquidación de credito, juzgado liquidacion credito, liquidar credito juzgado, liquidar credito proceso judicial"/>
+  <meta name="author" content="Carlos Enrique Murgas Carrillo"/>
+   <meta name="copyright" content="Carlos Enrique Murgas Carrillo"/>
+       <meta name="robots" content="index,follow,archive,translate,imageindex"/>
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #f9f9f9;
+      color: #222;
+      padding: 1rem;
+    }
+
+    #contenedorPDF {
+  max-width: 650px;
+  margin: auto;
+  padding: 1rem;
+  background: white;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+    h1 {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 1rem;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 1rem;
+      margin-top: 0.3rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.2rem;
+    }
+
+    th, td {
+      padding: 0.6rem;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background-color: #eaeaea;
+    }
+
+    tfoot td {
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .total {
+      color: #003366;
+    }
+
+
+  </style>
+</head>
+<body>
+
+  <div id="contenedorPDF">
+    <h1>Liquidadora de Créditos Judiciales (y extrajudiciales también)</h1>
+    <p>Calcula los gastos asociados a la liquidación de créditos en Colombia</p>
+    <p><em>Nota: Esta calculadora es una herramienta de referencia y no reemplaza la <a href="https://wa.me/573017673013/?text=Hola,%20quiero%20liquidar%20un%20crédito.">asesoría profesional</a>. Los costos pueden variar según la notaría y la ubicación*.</em></a></p>
+    <h3>Liquidación de Créditos</h3>
+    <label for="valorCredito">Valor del crédito (en pesos colombianos - COP):</label>
+    <input type="number" id="valorCredito" value="1000000" />
+
+    <label for="interesCorriente">Interés Corriente:</label>
+    <input type="number" id="interesCorriente" value="1" />
+
+    <label for="interesMoratorio">Interés Moratorio:</label>
+    <input type="number" id="interesMoratorio" value="1.5" />
+
+    <label for="diaPrestamo">Día del préstamo</label>
+    <input type="date" id="diaPrestamo" value="2026-01-01" />
+
+    <label for="diaLiquidacion">Día de la liquidación</label>
+    <input type="date" id="diaLiquidacion" value="2026-06-01" />
+
+    <table>
+      <thead>
+        <tr>
+          <th>Concepto</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody id="resultados"></tbody>
+      <tfoot>
+        <tr>
+          <td>Total Liquidación</td>
+          <td id="total" class="total"></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+<br/>
+  <script>
+    const valorCreditoInput = document.getElementById("valorCredito");
+    const interesCorrienteInput = document.getElementById("interesCorriente");
+    const interesMoratorioInput = document.getElementById("interesMoratorio");
+    const diaPrestamoInput = document.getElementById("diaPrestamo");
+    const diaLiquidacionInput = document.getElementById("diaLiquidacion");
+    const resultadosBody  = document.getElementById("resultados");
+    const totalDisplay = document.getElementById("total");
+
+    function formatoCOP( num) {
+      return new Intl.NumberFormat("es-CO", {
+        style: "currency",
+        currency: "COP",
+        minimumFractionDigits: 0,
+      }).format(num);
+    }
+
+function calcular() {
+  const valorCredito = parseFloat(valorCreditoInput.value) || 0;
+  const interesCorriente = parseFloat(interesCorrienteInput.value) || 0;
+  const interesMoratorio = parseFloat(interesMoratorioInput.value) || 0;
+
+  const diaPrestamo = new Date(diaPrestamoInput.value);
+  const diaLiquidacion = new Date(diaLiquidacionInput.value);
+  const diasTranscurridos = Math.ceil((diaLiquidacion - diaPrestamo) / (1000 * 60 * 60 * 24)); 
+const interesCorrienteTotal = (valorCredito * interesCorriente / 100) * (diasTranscurridos/30);
+const interesMoratorioTotal = (valorCredito * interesMoratorio / 100) * (diasTranscurridos/30);
+const total = Math.round(valorCredito + interesCorrienteTotal + interesMoratorioTotal);
+
+  const filas = [
+    ["Valor del crédito", formatoCOP(valorCredito)],
+    ["Días transcurridos", diasTranscurridos],
+    ["Interés Corriente", formatoCOP(interesCorrienteTotal)],
+    ["Interés Moratorio", formatoCOP(interesMoratorioTotal)],
+    ["Total Liquidación", formatoCOP(total)]
+  ];
+
+  resultadosBody.innerHTML = filas
+    .map(([concepto, valor]) => `<tr><td>${concepto}</td><td>${valor}</td></tr>`)
+    .join("");
+
+  totalDisplay.textContent = formatoCOP(total);
+}
+
+valorCreditoInput.addEventListener("input", calcular);
+interesCorrienteInput.addEventListener("input", calcular);
+interesMoratorioInput.addEventListener("input", calcular);
+diaPrestamoInput.addEventListener("change", calcular);
+diaLiquidacionInput.addEventListener("change", calcular);
+calcular(); // ejecutar al inicio 
+  </script>
+<footer class="footer">    
+    <p>&copy; 2026,  MurgasCarrillo.</p>
+    <a href="./privacy.html">Política de Privacidad</a></li><br/>
+      <a href="./privacy.html">Términos y Condiciones</a></li>
+      <br/>
+      <p>Conoce más en:</p> 
+        <a href="./index.html"><img id="boton-retorno" style="width:50px;height:auto;margin:auto;padding:7px;display: list-item; box-shadow: 1.3px 1.3px 1.3px 0px #717479; border-radius: 50%;" src="images/murgascarrillo.webp"/>
+      </a>
+</footer>
+</body>
+</html>
+
+
