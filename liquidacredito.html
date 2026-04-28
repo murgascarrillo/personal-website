@@ -60,7 +60,7 @@
       padding: 0.6rem;
       border-bottom: 1px solid #ddd;
       text-align: left;
-    }
+    }th{font-weight: bold;}
 
     th {
       background-color: #eaeaea;
@@ -104,8 +104,8 @@
 
   <div id="contenedorPDF">
     <h1>Liquidadora de Créditos Judiciales (y extrajudiciales también)</h1>
-    <p>Calcula los gastos asociados a la liquidación de créditos en Colombia</p>
-    <p><em>Nota: Esta calculadora es una herramienta de referencia y no reemplaza la <a href="https://wa.me/573017673013/?text=Hola,%20quiero%20liquidar%20un%20crédito.">asesoría profesional</a>.</em></a></p>
+    <p>Calcula el valor actual de tu crédito incluyendo los intereses corrientes (de plazo) y moratorios causados a la fecha.</p>
+    <p><em>Esta calculadora es una herramienta de referencia y no reemplaza la <a href="https://wa.me/573017673013/?text=Hola,%20quiero%20liquidar%20un%20crédito.">asesoría profesional</a>.</em></a></p>
     <h3>Liquidación de Créditos</h3>
     <label for="valorCredito">Valor del crédito (en pesos colombianos - COP):</label>
     <input type="number" id="valorCredito" value="1000000" />
@@ -129,7 +129,7 @@
       <thead>
         <tr>
           <th>Concepto</th>
-          <th>Subtotal</th>
+          <th>Datos</th>
         </tr>
       </thead>
       <tbody id="resultados"></tbody>
@@ -152,7 +152,7 @@
     const resultadosBody  = document.getElementById("resultados");
     const totalDisplay = document.getElementById("total");
 
-    function formatoCOP( num) {
+    function formatoCOP(num) {
       return new Intl.NumberFormat("es-CO", {
         style: "currency",
         currency: "COP",
@@ -160,28 +160,48 @@
       }).format(num);
     }
 
+    function formatoFechaLarga(fecha) {
+      const meses = [
+        "enero", "febrero", "marzo", "abril", "mayo", "junio",
+        "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+      ];
+      const dia = fecha.getDate();
+      const mes = meses[fecha.getMonth()];
+      const año = fecha.getFullYear();
+      return `el día ${dia} del mes de ${mes} del año ${año}`;
+    }
+
 function calcular() {
   const valorCredito = parseFloat(valorCreditoInput.value) || 0;
   const interesCorriente = parseFloat(interesCorrienteInput.value) || 0;
   const interesMoratorio = parseFloat(interesMoratorioInput.value) || 0;
 
-  const diaPrestamo = new Date(diaPrestamoInput.value);
-  const diaFechaMaximaPago = new Date(diaFechaMaximaPagoInput.value);
-  const diaLiquidacion = new Date(diaLiquidacionInput.value);
-  const diasTranscurridosSinMora = Math.ceil((diaFechaMaximaPago - diaPrestamo) / (1000 * 60 * 60 * 24));
-  const diasTranscurridosConMora = Math.ceil((diaLiquidacion - diaFechaMaximaPago) / (1000 * 60 * 60 * 24));
+  const [yearPrestamo, monthPrestamo, dayPrestamo] = diaPrestamoInput.value.split('-').map(Number);
+  const diaPrestamo = new Date(yearPrestamo, monthPrestamo - 1, dayPrestamo);
+
+  const [yearMaxPago, monthMaxPago, dayMaxPago] = diaFechaMaximaPagoInput.value.split('-').map(Number);
+  const diaFechaMaximaPagoCorriente = new Date(yearMaxPago, monthMaxPago - 1, dayMaxPago);
+  const diaFechaInicioMora = new Date(yearMaxPago, monthMaxPago - 1, dayMaxPago +1);
+  const [yearLiquidacion, monthLiquidacion, dayLiquidacion] = diaLiquidacionInput.value.split('-').map(Number);
+  const diaLiquidacion = new Date(yearLiquidacion, monthLiquidacion - 1, dayLiquidacion);
+  const diasTranscurridosSinMora = Math.ceil((diaFechaMaximaPagoCorriente - diaPrestamo) / (1000 * 60 * 60 * 24));
+  const diasTranscurridosConMora = Math.ceil((diaLiquidacion - diaFechaMaximaPagoCorriente) / (1000 * 60 * 60 * 24));
 const interesCorrienteTotal = (valorCredito * interesCorriente / 100) * (diasTranscurridosSinMora/30);
 const interesMoratorioTotal = (valorCredito * interesMoratorio / 100) * (diasTranscurridosConMora/30);
 const total = Math.round(valorCredito + interesCorrienteTotal + interesMoratorioTotal);
 
   const filas = [
-    ["Valor del crédito", formatoCOP(valorCredito)],
-    ["Fecha máxima de pago", diaFechaMaximaPago.toLocaleDateString("es-CO")],
-    ["Días transcurridos hasta fecha máxima de pago sin mora", diasTranscurridosSinMora],
-    ["Días transcurridos con mora", diasTranscurridosConMora],
-    ["Interés Corriente", formatoCOP(interesCorrienteTotal)],
-    ["Interés Moratorio", formatoCOP(interesMoratorioTotal)],
-    ["Total Liquidación", formatoCOP(total)]
+    ["Valor del crédito:", formatoCOP(valorCredito)],
+    ["Fecha máxima de pago sin mora:", diaFechaMaximaPagoCorriente.toLocaleDateString("es-CO")],
+    ["Fecha de inicio de mora:", diaFechaInicioMora.toLocaleDateString("es-CO")],
+    ["Contexto del Crédito:", `El capital adeudado es ${formatoCOP(valorCredito)}. Como interés de plazo se pactó la tasa del ${interesCorriente}% mensual y como interés de mora la tasa del ${interesMoratorio}% mensual sobre el capital adeudado.`],
+    ["Días transcurridos hasta fecha máxima de pago sin mora:", diasTranscurridosSinMora],
+    ["Días transcurridos con mora:", diasTranscurridosConMora],
+    ["Interés Corriente Causado:", formatoCOP(interesCorrienteTotal)],
+    ["Contexto Interes Corriente:", `Los intereses de plazo del ${interesCorriente}% mensual, desde ${formatoFechaLarga(diaPrestamo)} hasta ${formatoFechaLarga(diaFechaMaximaPagoCorriente)}, se liquidan por el valor de ${formatoCOP(interesCorrienteTotal)}.`],
+    ["Interés Moratorio Causado:", formatoCOP(interesMoratorioTotal)],
+    ["Contexto Interes Moratorio:", `Los intereses moratorios del ${interesMoratorio}% mensual, desde ${formatoFechaLarga(diaFechaInicioMora)} hasta ${formatoFechaLarga(diaLiquidacion)}, se liquidan por el valor de ${formatoCOP(interesMoratorioTotal)}.`],
+    ["Total Liquidación:", formatoCOP(total)]
   ];
 
   resultadosBody.innerHTML = filas
