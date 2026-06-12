@@ -74,6 +74,42 @@
     .total {
       color: #003366;
     }
+    .period-item {
+      background: #f5f5f5;
+      padding: 1rem;
+      margin-top: 0.8rem;
+      border-left: 4px solid #003366;
+      border-radius: 4px;
+    }
+    .period-item input {
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .remove-btn {
+      background-color: #d9534f;
+      color: white;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .remove-btn:hover {
+      background-color: #c9302c;
+    }
+    .add-btn {
+      background-color: #5cb85c;
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 1rem;
+    }
+    .add-btn:hover {
+      background-color: #4cae4c;
+    }
     .footer { background-color: #000000; color: white; padding: 20px;text-align: center;  }
     .footer ul { display: flex;flex-direction: column; gap: 10px;    margin-top: 10px;}
     .footer ul li a { color: #b2d1a9; font-weight: 600;  }
@@ -110,11 +146,8 @@
     <label for="valorCredito">Valor del crédito (en pesos colombianos - COP):</label>
     <input type="number" id="valorCredito" value="1000000" />
 
-    <label for="interesCorriente">Interés Corriente:</label>
+    <label for="interesCorriente">Interés Corriente (%):</label>
     <input type="number" id="interesCorriente" value="1" />
-
-    <label for="interesMoratorio">Interés Moratorio:</label>
-    <input type="number" id="interesMoratorio" value="1.5" />
 
     <label for="diaPrestamo">Día del préstamo</label>
     <input type="date" id="diaPrestamo" value="2026-01-01" />
@@ -122,8 +155,27 @@
     <label for="diaFechaMaximaPago">Día de la fecha máxima de pago sin mora</label>
     <input type="date" id="diaFechaMaximaPago" value="2026-01-31" />
 
+    <label for="interesMoratorio">Interés Moratorio básico (%):</label>
+    <input type="number" id="interesMoratorio" value="1.5" />
+
     <label for="diaLiquidacion">Día de la liquidación</label>
     <input type="date" id="diaLiquidacion" value="2026-06-01" />
+
+    <label for="interesMoratorio">Períodos de Mora Adicionales:</label>
+    <div id="periodsContainer"></div>
+    <button class="add-btn" id="addPeriodBtn">+ Agregar Período de Mora Adicional</button>
+
+    <table style="margin-top: 2rem;">
+      <thead>
+        <tr>
+          <th>Período de Mora</th>
+          <th>Días</th>
+          <th>Tasa (%)</th>
+          <th>Interés Moratorio</th>
+        </tr>
+      </thead>
+      <tbody id="moratorioResultados"></tbody>
+    </table>
 
     <table>
       <thead>
@@ -149,8 +201,14 @@
     const diaPrestamoInput = document.getElementById("diaPrestamo");
     const diaFechaMaximaPagoInput = document.getElementById("diaFechaMaximaPago");
     const diaLiquidacionInput = document.getElementById("diaLiquidacion");
-    const resultadosBody  = document.getElementById("resultados");
+    const periodsContainer = document.getElementById("periodsContainer");
+    const addPeriodBtn = document.getElementById("addPeriodBtn");
+    const resultadosBody = document.getElementById("resultados");
+    const moratorioResultados = document.getElementById("moratorioResultados");
     const totalDisplay = document.getElementById("total");
+
+    let periodIndex = 0;
+    let periods = [];
 
     function formatoCOP(num) {
       return new Intl.NumberFormat("es-CO", {
@@ -171,53 +229,175 @@
       return `el día ${dia} del mes de ${mes} del año ${año}`;
     }
 
-function calcular() {
-  const valorCredito = parseFloat(valorCreditoInput.value) || 0;
-  const interesCorriente = parseFloat(interesCorrienteInput.value) || 0;
-  const interesMoratorio = parseFloat(interesMoratorioInput.value) || 0;
+    function addPeriod() {
+      const id = periodIndex++;
+      const period = {
+        id: id,
+        fechaInicio: new Date(2026, 0, 31),
+        fechaFin: new Date(2026, 5, 1),
+        tasa: 1.5
+      };
+      periods.push(period);
+      renderPeriod(period);
+      calcular();
+    }
 
-  const [yearPrestamo, monthPrestamo, dayPrestamo] = diaPrestamoInput.value.split('-').map(Number);
-  const diaPrestamo = new Date(yearPrestamo, monthPrestamo - 1, dayPrestamo);
+    function renderPeriod(period) {
+      const periodDiv = document.createElement("div");
+      periodDiv.className = "period-item";
+      periodDiv.id = `period-${period.id}`;
+      periodDiv.innerHTML = `
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end;">
+          <div style="flex: 1; min-width: 200px;">
+            <label>Fecha de Inicio de Mora:</label>
+            <input type="date" class="fecha-inicio" value="2026-01-31" data-id="${period.id}" />
+          </div>
+          <div style="flex: 1; min-width: 200px;">
+            <label>Fecha de Fin de Mora:</label>
+            <input type="date" class="fecha-fin" value="2026-06-01" data-id="${period.id}" />
+          </div>
+          <div style="flex: 1; min-width: 150px;">
+            <label>Tasa Mora (%):</label>
+            <input type="number" class="tasa-mora" step="0.01" value="1.5" data-id="${period.id}" />
+          </div>
+          <button class="remove-btn" onclick="removePeriod(${period.id})">Eliminar</button>
+        </div>
+      `;
+      periodsContainer.appendChild(periodDiv);
 
-  const [yearMaxPago, monthMaxPago, dayMaxPago] = diaFechaMaximaPagoInput.value.split('-').map(Number);
-  const diaFechaMaximaPagoCorriente = new Date(yearMaxPago, monthMaxPago - 1, dayMaxPago);
-  const diaFechaInicioMora = new Date(yearMaxPago, monthMaxPago - 1, dayMaxPago +1);
-  const [yearLiquidacion, monthLiquidacion, dayLiquidacion] = diaLiquidacionInput.value.split('-').map(Number);
-  const diaLiquidacion = new Date(yearLiquidacion, monthLiquidacion - 1, dayLiquidacion);
-  const diasTranscurridosSinMora = Math.ceil((diaFechaMaximaPagoCorriente - diaPrestamo) / (1000 * 60 * 60 * 24));
-  const diasTranscurridosConMora = Math.ceil((diaLiquidacion - diaFechaMaximaPagoCorriente) / (1000 * 60 * 60 * 24));
-const interesCorrienteTotal = (valorCredito * interesCorriente / 100) * (diasTranscurridosSinMora/30);
-const interesMoratorioTotal = (valorCredito * interesMoratorio / 100) * (diasTranscurridosConMora/30);
-const total = Math.round(valorCredito + interesCorrienteTotal + interesMoratorioTotal);
+      // Agregar listeners
+      const inputs = periodDiv.querySelectorAll("input");
+      inputs.forEach(input => {
+        input.addEventListener("change", calcular);
+        input.addEventListener("input", calcular);
+      });
+    }
 
-  const filas = [
-    ["Valor del crédito:", formatoCOP(valorCredito)],
-    ["Fecha máxima de pago sin mora:", diaFechaMaximaPagoCorriente.toLocaleDateString("es-CO")],
-    ["Fecha de inicio de mora:", diaFechaInicioMora.toLocaleDateString("es-CO")],
-    ["Contexto del Crédito:", `El capital adeudado es ${formatoCOP(valorCredito)}. Como interés de plazo se pactó la tasa del ${interesCorriente}% mensual y como interés de mora la tasa del ${interesMoratorio}% mensual sobre el capital adeudado.`],
-    ["Días transcurridos hasta fecha máxima de pago sin mora:", diasTranscurridosSinMora],
-    ["Días transcurridos con mora:", diasTranscurridosConMora],
-    ["Interés Corriente Causado:", formatoCOP(interesCorrienteTotal)],
-    ["Contexto Interes Corriente:", `Los intereses de plazo del ${interesCorriente}% mensual, desde ${formatoFechaLarga(diaPrestamo)} hasta ${formatoFechaLarga(diaFechaMaximaPagoCorriente)}, se liquidan por el valor de ${formatoCOP(interesCorrienteTotal)}.`],
-    ["Interés Moratorio Causado:", formatoCOP(interesMoratorioTotal)],
-    ["Contexto Interes Moratorio:", `Los intereses moratorios del ${interesMoratorio}% mensual, desde ${formatoFechaLarga(diaFechaInicioMora)} hasta ${formatoFechaLarga(diaLiquidacion)}, se liquidan por el valor de ${formatoCOP(interesMoratorioTotal)}.`],
-    ["Total Liquidación:", formatoCOP(total)]
-  ];
+    function removePeriod(id) {
+      periods = periods.filter(p => p.id !== id);
+      const periodDiv = document.getElementById(`period-${id}`);
+      if (periodDiv) {
+        periodDiv.remove();
+      }
+      calcular();
+    }
 
-  resultadosBody.innerHTML = filas
-    .map(([concepto, valor]) => `<tr><td>${concepto}</td><td>${valor}</td></tr>`)
-    .join("");
+    function updatePeriodsFromUI() {
+      periods.forEach(period => {
+        const periodDiv = document.getElementById(`period-${period.id}`);
+        if (periodDiv) {
+          const fechaInicioInput = periodDiv.querySelector(".fecha-inicio");
+          const fechaFinInput = periodDiv.querySelector(".fecha-fin");
+          const tasaInput = periodDiv.querySelector(".tasa-mora");
 
-  totalDisplay.textContent = formatoCOP(total);
-}
+          if (fechaInicioInput && fechaInicioInput.value) {
+            const [year, month, day] = fechaInicioInput.value.split('-').map(Number);
+            period.fechaInicio = new Date(year, month - 1, day);
+          }
 
-valorCreditoInput.addEventListener("input", calcular);
-interesCorrienteInput.addEventListener("input", calcular);
-interesMoratorioInput.addEventListener("input", calcular);
-diaPrestamoInput.addEventListener("change", calcular);
-diaFechaMaximaPagoInput.addEventListener("change", calcular);
-diaLiquidacionInput.addEventListener("change", calcular);
-calcular(); // ejecutar al inicio 
+          if (fechaFinInput && fechaFinInput.value) {
+            const [year, month, day] = fechaFinInput.value.split('-').map(Number);
+            period.fechaFin = new Date(year, month - 1, day);
+          }
+
+          if (tasaInput && tasaInput.value) {
+            period.tasa = parseFloat(tasaInput.value) || 0;
+          }
+        }
+      });
+    }
+
+    function calcular() {
+      const valorCredito = parseFloat(valorCreditoInput.value) || 0;
+      const interesCorriente = parseFloat(interesCorrienteInput.value) || 0;
+      const interesMoratorio = parseFloat(interesMoratorioInput.value) || 0;
+
+      const [yearPrestamo, monthPrestamo, dayPrestamo] = diaPrestamoInput.value.split('-').map(Number);
+      const diaPrestamo = new Date(yearPrestamo, monthPrestamo - 1, dayPrestamo);
+
+      const [yearMaxPago, monthMaxPago, dayMaxPago] = diaFechaMaximaPagoInput.value.split('-').map(Number);
+      const diaFechaMaximaPagoCorriente = new Date(yearMaxPago, monthMaxPago - 1, dayMaxPago);
+      const diaFechaInicioMora = new Date(yearMaxPago, monthMaxPago - 1, dayMaxPago + 1);
+      
+      const [yearLiquidacion, monthLiquidacion, dayLiquidacion] = diaLiquidacionInput.value.split('-').map(Number);
+      const diaLiquidacion = new Date(yearLiquidacion, monthLiquidacion - 1, dayLiquidacion);
+
+      const diasTranscurridosSinMora = Math.ceil((diaFechaMaximaPagoCorriente - diaPrestamo) / (1000 * 60 * 60 * 24));
+      const diasTranscurridosConMora = Math.ceil((diaLiquidacion - diaFechaInicioMora) / (1000 * 60 * 60 * 24));
+      
+      const interesCorrienteTotal = (valorCredito * interesCorriente / 100) * (diasTranscurridosSinMora / 30);
+      const interesMoratorioBasico = (valorCredito * interesMoratorio / 100) * (diasTranscurridosConMora / 30);
+
+      updatePeriodsFromUI();
+
+      // Calcular intereses moratorios adicionales por período
+      let interesMoratorioAdicional = 0;
+      const moratorioDetalles = [];
+
+      periods.forEach((period, index) => {
+        const diasMora = Math.ceil((period.fechaFin - period.fechaInicio) / (1000 * 60 * 60 * 24));
+        const interesMora = (valorCredito * period.tasa / 100) * (diasMora / 30);
+        interesMoratorioAdicional += interesMora;
+        
+        moratorioDetalles.push({
+          numero: index + 1,
+          fechaInicio: period.fechaInicio,
+          fechaFin: period.fechaFin,
+          dias: diasMora,
+          tasa: period.tasa,
+          interes: interesMora
+        });
+      });
+
+      const interesMoratorioTotal = interesMoratorioBasico + interesMoratorioAdicional;
+      const total = Math.round(valorCredito + interesCorrienteTotal + interesMoratorioTotal);
+
+      // Actualizar tabla de períodos de mora
+      moratorioResultados.innerHTML = moratorioDetalles
+        .map(detalle => `
+          <tr>
+            <td>Período ${detalle.numero}: ${detalle.fechaInicio.toLocaleDateString("es-CO")} a ${detalle.fechaFin.toLocaleDateString("es-CO")}</td>
+            <td>${detalle.dias}</td>
+            <td>${detalle.tasa.toFixed(2)}%</td>
+            <td>${formatoCOP(detalle.interes)}</td>
+          </tr>
+        `)
+        .join("");
+
+      // Actualizar tabla general de resultados
+      const filas = [
+        ["Valor del crédito:", formatoCOP(valorCredito)],
+        ["Fecha de inicio de préstamo:", diaPrestamo.toLocaleDateString("es-CO")],
+        ["Fecha máxima de pago sin mora:", diaFechaMaximaPagoCorriente.toLocaleDateString("es-CO")],
+        ["Fecha de inicio de mora:", diaFechaInicioMora.toLocaleDateString("es-CO")],
+        ["Contexto del Crédito:", `El capital adeudado es ${formatoCOP(valorCredito)}. Como interés de plazo se pactó la tasa del ${interesCorriente}% mensual y como interés de mora la tasa del ${interesMoratorio}% mensual sobre el capital adeudado.`],
+        ["Días transcurridos hasta fecha máxima de pago sin mora:", diasTranscurridosSinMora],
+        ["Días transcurridos con mora:", diasTranscurridosConMora],
+        ["Interés Corriente Causado:", formatoCOP(interesCorrienteTotal)],
+        ["Contexto Interes Corriente:", `Los intereses de plazo del ${interesCorriente}% mensual, desde ${formatoFechaLarga(diaPrestamo)} hasta ${formatoFechaLarga(diaFechaMaximaPagoCorriente)}, se liquidan por el valor de ${formatoCOP(interesCorrienteTotal)}.`],
+        ["Interés Moratorio Básico Causado:", formatoCOP(interesMoratorioBasico)],
+        ["Contexto Interes Moratorio Básico:", `Los intereses moratorios del ${interesMoratorio}% mensual, desde ${formatoFechaLarga(diaFechaInicioMora)} hasta ${formatoFechaLarga(diaLiquidacion)}, se liquidan por el valor de ${formatoCOP(interesMoratorioBasico)}.`],
+        ...(periods.length > 0 ? [["Interés Moratorio Adicional Causado:", formatoCOP(interesMoratorioAdicional)]] : []),
+        ...(periods.length > 0 ? [["Contexto Interes Moratorio Adicional:", `Se han liquidado intereses moratorios adicionales según ${periods.length} período(s) de mora con sus respectivas tasas, para un total de ${formatoCOP(interesMoratorioAdicional)}.`]] : []),
+        ["Interés Moratorio Total Causado:", formatoCOP(interesMoratorioTotal)]
+      ];
+
+      resultadosBody.innerHTML = filas
+        .map(([concepto, valor]) => `<tr><td>${concepto}</td><td>${valor}</td></tr>`)
+        .join("");
+
+      totalDisplay.textContent = formatoCOP(total);
+    }
+
+    valorCreditoInput.addEventListener("input", calcular);
+    interesCorrienteInput.addEventListener("input", calcular);
+    interesMoratorioInput.addEventListener("input", calcular);
+    diaPrestamoInput.addEventListener("change", calcular);
+    diaFechaMaximaPagoInput.addEventListener("change", calcular);
+    diaLiquidacionInput.addEventListener("change", calcular);
+    addPeriodBtn.addEventListener("click", addPeriod);
+
+    calcular(); // ejecutar al inicio
   </script>
 <footer class="footer">    
     <p>&copy; 2026,  MurgasCarrillo.</p>
