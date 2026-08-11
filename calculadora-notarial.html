@@ -123,8 +123,9 @@
     <h3>Compraventa de Bien Inmueble</h3>
     <label for="valorVenta">Valor de venta del inmueble (en pesos colombianos - COP):</label>
     <input type="number" id="valorVenta" value="10000000" />
-
-    <label for="cantidadHojas">Cantidad de hojas (matriz escritura + copias):</label>
+    <label for="valorHipoteca">Valor de la hipoteca (en caso de que se constituya):</label>
+    <input type="number" id="valorHipoteca" value="0" />
+    <label for="cantidadHojas">Valor de hojas (parte matriz de la escritura + copias matriz y anexos):</label>
     <input type="number" id="cantidadHojas" value="49" />
 
     <label for="actosSinCuantia">Número de actos sin cuantía (Actualizaciones, Aclaraciones, Cancelaciones de limitaciones al dominio, etc.):</label>
@@ -149,8 +150,10 @@
 
   <button id="exportarBtn" onclick="exportarPDF()">Exportar a PDF</button>
 <br/>
+<p style="text-align: center; font-size: 0.9rem; color: #777;">Versión 0.0.0.1</p>
   <script>
     const valorVentaInput = document.getElementById("valorVenta");
+    const valorHipotecaInput = document.getElementById("valorHipoteca");
     const cantidadHojasInput = document.getElementById("cantidadHojas");
     const actosSinCuantiaInput = document.getElementById("actosSinCuantia");
     const resultadosBody = document.getElementById("resultados");
@@ -166,6 +169,7 @@
 
 function calcular() {
   const valorVenta = parseFloat(valorVentaInput.value) || 0;
+  const valorHipoteca = parseFloat(valorHipotecaInput.value) || 0;
   const hojas = parseInt(cantidadHojasInput.value) || 0;
   const actosSinCuantia = parseInt(actosSinCuantiaInput.value) || 0;
 
@@ -175,20 +179,37 @@ function calcular() {
   const costoHojas = hojas * costoHoja;
 
   let derechos = 0;
-  if (valorVenta <= 259300) {
-    derechos = 30900;
-  } else {
-    derechos = 30900 + (valorVenta - 259300) * 0.003;
+  let derechosHipoteca = 0;
+  switch (true) {
+    case valorVenta === 0:
+      derechos = 0;
+      break;
+    case valorVenta <= 259300:
+      derechos = 30900;
+      break;
+    default:
+      derechos = 30900 + (valorVenta - 259300) * 0.003;
+  }
+
+if (valorHipoteca > 0) {
+    if (valorHipoteca <= 259300) {
+      derechosHipoteca = 30900;
+    } else {
+      derechosHipoteca = 30900 + (valorHipoteca - 259300) * 0.003;
+    }
   }
 
   const subtotalActosSinCuantia = actosSinCuantia * valorActoSinCuantia;
   const ivaActosSinCuantia = subtotalActosSinCuantia * 0.19;
-  const ivaDerechos = (costoHojas + derechos) * 0.19;
+  const ivaDerechos = (costoHojas + derechos + derechosHipoteca) * 0.19;
   const ivaTotal = (ivaActosSinCuantia + ivaDerechos);
 
   const retencion = valorVenta * 0.01;
   let recaudo = 28900; // Valor base para inmuebles hasta 100 millones.
   switch (true) {
+    case valorVenta === 0:
+      recaudo = 19300;
+      break;
     case valorVenta > 1500000000:
       recaudo = 96400;
       break;
@@ -209,18 +230,18 @@ function calcular() {
   }
 
   const total = Math.round(
-    costoHojas + derechos + ivaTotal + retencion +
+    costoHojas + derechos + derechosHipoteca + ivaTotal + retencion +
     subtotalActosSinCuantia + recaudo
   );
 
   const filas = [
-    ["Cantidad Hojas (Extensión y Protocolo)", hojas],
-    ["Costo hojas escritura", formatoCOP(costoHojas)],
-    ["Derechos Notariales", formatoCOP(derechos)],
-    ["Actos sin cuantía", formatoCOP(subtotalActosSinCuantia)],
-    ["IVA Total (19%) Derechos + Derechos Actos sin cuantía", formatoCOP(ivaTotal)],
-    ["Retención en la fuente (1%)", formatoCOP(retencion)],
-    ["Recaudo Sup. y Fondo", formatoCOP(recaudo)],
+    ["Cantidad de hojas", hojas],
+    ["Costo de las hojas", formatoCOP(costoHojas)],
+    ["Derechos Notariales Actos con cuantía (Compraventa + Hipoteca)", formatoCOP(derechos + derechosHipoteca)],
+    ["Derechos Notariales Actos Sin cuantía", formatoCOP(subtotalActosSinCuantia)],
+    ["IVA Total del 19% (Derechos A.Cuantía + Derecho A.S/Cuantía + Hojas)", formatoCOP(ivaTotal)],
+    ["Retención en la fuente (1% sobre el valor de la venta)", formatoCOP(retencion)],
+    ["Recaudos Tesorería SuperNotariado y Fondo Notariado", formatoCOP(recaudo)],
   ];
 
   resultadosBody.innerHTML = filas
@@ -272,7 +293,7 @@ async function exportarPDF() {
 
   pdf.save("CalculoEscrituracion.pdf");
 }
-
+    valorHipotecaInput.addEventListener("input", calcular);
     valorVentaInput.addEventListener("input", calcular);
     cantidadHojasInput.addEventListener("input", calcular);
     actosSinCuantiaInput.addEventListener("input", calcular);
