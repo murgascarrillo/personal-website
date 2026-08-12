@@ -172,6 +172,7 @@ function calcular() {
   const valorHipoteca = parseFloat(valorHipotecaInput.value) || 0;
   const hojas = parseInt(cantidadHojasInput.value) || 0;
   const actosSinCuantia = parseInt(actosSinCuantiaInput.value) || 0;
+  const valorConsolidado = valorVenta + valorHipoteca;
 
   const costoHoja = 5600;
   const valorActoSinCuantia = 90600;
@@ -207,22 +208,22 @@ if (valorHipoteca > 0) {
   const retencion = valorVenta * 0.01;
   let recaudo = 28900; // Valor base para inmuebles hasta 100 millones.
   switch (true) {
-    case valorVenta === 0:
+    case valorConsolidado === 0:
       recaudo = 19300;
       break;
-    case valorVenta > 1500000000:
+    case valorConsolidado > 1500000000:
       recaudo = 96400;
       break;
-    case valorVenta > 1000000000:
+    case valorConsolidado > 1000000000:
       recaudo = 84800;
       break;
-    case valorVenta > 500000000:
+    case valorConsolidado > 500000000:
       recaudo = 71900;
       break;
-    case valorVenta > 300000000:
+    case valorConsolidado > 300000000:
       recaudo = 52700;
       break;
-    case valorVenta > 100000000:
+    case valorConsolidado > 100000000:
       recaudo = 43700;
       break;
     default:
