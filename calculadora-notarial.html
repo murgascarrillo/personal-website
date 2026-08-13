@@ -20,7 +20,6 @@
       padding: 1rem;
       width: 100%;
     }
-
     #contenedorPDF {
   max-width: 650px;
   margin: auto;
@@ -29,19 +28,16 @@
   font-size: 1rem;
   box-sizing: border-box;
 }
-
     h1 {
       text-align: center;
       font-size: 1.5rem;
       margin-bottom: 1.5rem;
     }
-
     label {
       font-weight: bold;
       display: block;
       margin-top: 1rem;
     }
-
     input[type="number"] {
       width: 100%;
       padding: 0.5rem;
@@ -50,32 +46,26 @@
       border: 1px solid #ccc;
       border-radius: 4px;
     }
-
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 1.2rem;
     }
-
     th, td {
       padding: 0.6rem;
       border-bottom: 1px solid #ddd;
       text-align: left;
     }
-
     th {
       background-color: #eaeaea;
     }
-
     tfoot td {
       font-weight: bold;
       font-size: 1.1rem;
     }
-
     .total {
       color: #003366;
     }
-
     #exportarBtn {
       display: block;
       margin: 2rem auto 0 auto;
@@ -87,7 +77,6 @@
       font-size: 1rem;
       cursor: pointer;
     }
-
     #exportarBtn:hover {
       background-color: #005199;
     }
@@ -118,26 +107,22 @@
   <div id="contenedorPDF">
     <h1>Calculadora de Escrituración Notarial</h1>
     <p>Calcula los gastos asociados a la escrituración notarial en Colombia</p>
-    <p><em>Esta calculadora es una herramienta de referencia y no reemplaza la <a href="https://wa.me/573017673013/?text=Hola,%20quiero%20escriturar.">asesoría profesional</a>. Los costos pueden variar según la notaría y la ubicación*.</em></a></p>
-   
-
+    <p><em>Esta calculadora es una herramienta de referencia y no reemplaza la <a href="https://wa.me/573017673013/?text=Hola,%20quiero%20escriturar.">asesoría profesional</a>. Los costos pueden variar según la notaría, la documentación requerida y la cantidad de copias que se necesiten.*.</em></a></p>
     <p>Selecciona el tipo de escritura:</p>
     <select id="tipoEscritura" onchange="actualizarFormulario(); calcular();">
       <option value="compraventa">Compraventa de Bien Inmueble</option>
       <option value="matrimonio">Matrimonio</option>
       <option value="correccionRegistroCivil">Corrección de Registro Civil</option>
     </select>
-
     <h3 id="nombreEscritura">Compraventa de Bien Inmueble</h3>
-    <label id = "label-valorVenta" for="valorVenta">Valor de venta del inmueble (en pesos colombianos - COP):</label>
+    <label id = "label-valorVenta" for="valorVenta">Cuantía del precio de venta del inmueble (en pesos colombianos - COP):</label>
     <input style="display: block;" type="number" id="valorVenta" value="0" />
-    <label id = "label-valorHipoteca" for="valorHipoteca">Valor de la hipoteca (en caso de que se constituya):</label>
+    <label id = "label-valorHipoteca" for="valorHipoteca">Cuantía de la hipoteca (en caso de que se constituya):</label>
     <input style="display: block;" type="number" id="valorHipoteca" value="0" />
-    <label id = "label-cantidadHojas" for="cantidadHojas">Valor de hojas (parte matriz de la escritura + copias matriz y anexos):</label>
+    <label id = "label-cantidadHojas" for="cantidadHojas">Cantidad de hojas (parte matriz de la escritura + copias de la matriz y anexos):</label>
     <input style="display: block;" type="number" id="cantidadHojas" value="49" />
-    <label id = "label-actosSinCuantia" for="actosSinCuantia">Número de actos sin cuantía (Actualizaciones, Aclaraciones, Cancelaciones de limitaciones al dominio, etc.):</label>
+    <label id = "label-actosSinCuantia" for="actosSinCuantia">Cantidad de actos sin cuantía (Actualizaciones, Aclaraciones, Constitución y/o Cancelación de limitaciones al dominio, etc.):</label>
 <input style="display: block;" type="number" id="actosSinCuantia" value="0" min="0" />
-
     <table>
       <thead>
         <tr>
@@ -154,13 +139,10 @@
       </tfoot>
     </table>
   </div>
-
   <button id="exportarBtn" onclick="exportarPDF()">Exportar a PDF</button>
 <br/>
 <p style="text-align: center; font-size: 0.9rem; color: #777;">Versión 0.0.0.2</p>
   <script>
-
-
     const valorVentaInput = document.getElementById("valorVenta");
     const labelvalorVenta = document.getElementById("label-valorVenta");
     const labelvalorHipoteca = document.getElementById("label-valorHipoteca");
@@ -170,9 +152,6 @@
     const actosSinCuantiaInput = document.getElementById("actosSinCuantia");
     const resultadosBody = document.getElementById("resultados");
     const totalDisplay = document.getElementById("total");
-   
-
-
     function formatoCOP(num) {
       return new Intl.NumberFormat("es-CO", {
         style: "currency",
@@ -180,145 +159,157 @@
         minimumFractionDigits: 0,
       }).format(num);
     }
-
 function calcular() {
-  const valorVenta = parseFloat(valorVentaInput.value) || 0;
-  const valorHipoteca = parseFloat(valorHipotecaInput.value) || 0;
-  const hojas = parseInt(cantidadHojasInput.value) || 0;
-  const actosSinCuantia = parseInt(actosSinCuantiaInput.value) || 0;
-  const valorConsolidado = valorVenta + valorHipoteca;
-
-  const costoHoja = 5600;
-  const valorActoSinCuantia = 90600;
-
-  const costoHojas = hojas * costoHoja;
-  let derechos = 0;
-  let derechosHipoteca = 0;
- let derechosMatrimonio = 64700;
+    const valorVenta = parseFloat(valorVentaInput.value) || 0;
+    const valorHipoteca = parseFloat(valorHipotecaInput.value) || 0;
+    const hojas = parseInt(cantidadHojasInput.value) || 0;
+    const actosSinCuantia = parseInt(actosSinCuantiaInput.value) || 0;
+    const valorConsolidado = valorVenta + valorHipoteca;
+    const costoHoja = 5600;
+    const valorActoSinCuantia = 90600;
+    const costoHojas = hojas * costoHoja;
+    let derechos = 0;
+    let derechosHipoteca = 0;
+    let derechosMatrimonio = 64700;
     let derechosCorreccionRegistroCivil = 12100;
-
-  switch (true) {
-    case valorVenta === 0:
-      derechos = 0;
-      break;
-    case valorVenta <= 259300:
-      derechos = 30900;
-      break;
-    default:
-      derechos = 30900 + (valorVenta - 259300) * 0.003;
-  }
-
-if (valorHipoteca > 0) {
-    if (valorHipoteca <= 259300) {
-      derechosHipoteca = 30900;
-    } else {
-      derechosHipoteca = 30900 + (valorHipoteca - 259300) * 0.003;
+    if(valorVenta <= 0){
+        derechos = 0;
+    }else if(valorVenta <= 259300){
+         derechos = 30900;
+    }else{
+        derechos = 30900 + (valorVenta - 259300) * 0.003
     }
-  }
-
-if (document.getElementById("tipoEscritura").value === "matrimonio") {
-    derechosMatrimonio = 64700;
-    derechosCorreccionRegistroCivil = 0;
-  }
-  else if (document.getElementById("tipoEscritura").value === "compraventa") {
-    derechosMatrimonio = 0;
-    derechosCorreccionRegistroCivil = 0;
-  }
-
-  else if (document.getElementById("tipoEscritura").value === "correccionRegistroCivil") {
-    derechosCorreccionRegistroCivil = 12100;
-    derechosMatrimonio = 0;
-  }
-  else {
-    derechosMatrimonio = 0;
-    derechosCorreccionRegistroCivil = 0;
-  }
-
-  const subtotalActosSinCuantia = actosSinCuantia * valorActoSinCuantia;
-  const ivaActosSinCuantia = subtotalActosSinCuantia * 0.19;
-  const ivaDerechos = (costoHojas + derechos + derechosHipoteca + derechosMatrimonio + derechosCorreccionRegistroCivil) * 0.19;
-  const ivaTotal = (ivaActosSinCuantia + ivaDerechos);
-
-  const retencion = valorVenta * 0.01;
-  let recaudo = 28900; // Valor base para inmuebles hasta 100 millones.
-  switch (true) {
-    case valorConsolidado === 0:
-      recaudo = 19300;
-      break;
-    case valorConsolidado > 1500000000:
-      recaudo = 96400;
-      break;
-    case valorConsolidado > 1000000000:
-      recaudo = 84800;
-      break;
-    case valorConsolidado > 500000000:
-      recaudo = 71900;
-      break;
-    case valorConsolidado > 300000000:
-      recaudo = 52700;
-      break;
-    case valorConsolidado > 100000000:
-      recaudo = 43700;
-      break;
-    default:
-      recaudo = 28900;
-  }
-
-  const total = Math.round(
+    if(valorHipoteca > 0){
+        if(valorHipoteca <= 259300){
+            derechosHipoteca = 30900;
+        }else{
+            derechosHipoteca = 30900 + (valorHipoteca - 259300) * 0.003;
+        }
+    }
+    if (document.getElementById("tipoEscritura").value === "matrimonio") {
+        derechosMatrimonio = 64700;
+        derechosCorreccionRegistroCivil = 0;
+    }else if (document.getElementById("tipoEscritura").value === "compraventa") {
+        derechosMatrimonio = 0;
+        derechosCorreccionRegistroCivil = 0;
+    }else if (document.getElementById("tipoEscritura").value === "correccionRegistroCivil") {
+        derechosCorreccionRegistroCivil = 12100;
+        derechosMatrimonio = 0;
+    }else {
+        derechosMatrimonio = 0;
+        derechosCorreccionRegistroCivil = 0;
+    }
+    const subtotalActosSinCuantia = actosSinCuantia * valorActoSinCuantia;
+    const ivaActosSinCuantia = subtotalActosSinCuantia * 0.19;
+    const ivaDerechos = (costoHojas + derechos + derechosHipoteca + derechosMatrimonio + derechosCorreccionRegistroCivil) * 0.19;
+    const ivaTotal = (ivaActosSinCuantia + ivaDerechos);
+    const retencion = valorVenta * 0.01;
+    let recaudo = 28900;
+    if(valorConsolidado <= 0){
+        recaudo = 19300;
+    }else if(valorConsolidado >= 1500000000){
+        recaudo = 96400;
+    }else if(valorConsolidado >= 1000000000){
+        recaudo = 84800;
+    }else if(valorConsolidado >= 500000000){
+        recaudo = 71900;
+    }else if(valorConsolidado >= 300000000){
+        recaudo = 52700;
+    }else if(valorConsolidado >= 100000000){
+        recaudo = 43700;
+    }else{
+        recaudo = 28900;
+    }
+    const total = Math.round(
     costoHojas + derechos + derechosHipoteca + derechosMatrimonio + derechosCorreccionRegistroCivil + ivaTotal + retencion +
     subtotalActosSinCuantia + recaudo
-  );
+    );
+    const filas = [
+        ["Cantidad de hojas", hojas],
+        ["Costo de las hojas", formatoCOP(costoHojas)],
+        [
+            "Derechos Notariales Actos con cuantía (Compraventa + Hipoteca)", 
+            formatoCOP(derechos + derechosHipoteca),
+            "derechos_actosCuantia",
+        ],
+        [
+            "Derechos Notariales Actos Sin cuantía", 
+            formatoCOP(subtotalActosSinCuantia),
+            "derechos_actosSinCuantia",
+        ],
+        [
+            "Derechos Notariales Matrimonio", 
+            formatoCOP(derechosMatrimonio),
+            "derechos_matrimonio"
+        ],
+        ["Derechos Notariales Corrección de Registro Civil", formatoCOP(derechosCorreccionRegistroCivil), "derechos_correccionRegistroCivil"],
+        ["IVA Total del 19% (Con base en Derechos Notariales  + Hojas)", formatoCOP(ivaTotal)],
+        ["Retención en la fuente (1% sobre el valor de la venta)", formatoCOP(retencion), "retencion"],
+        ["Recaudos Tesorería SuperNotariado y Fondo Notariado", formatoCOP(recaudo)],
+    ];
+    const tipo_escritura = tipoEscritura.value;
+    resultadosBody.innerHTML = filas.filter( ([concepto, valor, id]) => {
+      if(tipo_escritura == "compraventa"){
+            if(id == "derechos_matrimonio" || id == "derechos_correccionRegistroCivil"){
+                return false;
+            }
+        }else{
+            if(id == "derechos_actosCuantia" || id == "derechos_actosSinCuantia" || id == "retencion"){
+                return false;
+            }
+        }  
+      if(tipo_escritura == "matrimonio"){
+            if(id == "derechos_actosCuantia" || id == "derechos_actosSinCuantia" || id == "derechos_correccionRegistroCivil" || id == "retencion"){
+                return false;
+            }
+        }else{
+            if(id == "derechos_matrimonio"){
+                return false;
+            }
+        }
+        if(tipo_escritura == "correccionRegistroCivil"){
+            if(id == "derechos_actosCuantia" || id == "derechos_actosSinCuantia" || id == "derechos_matrimonio" || id == "retencion"){
 
-  const filas = [
-    ["Cantidad de hojas", hojas],
-    ["Costo de las hojas", formatoCOP(costoHojas)],
-    ["Derechos Notariales Actos con cuantía (Compraventa + Hipoteca)", formatoCOP(derechos + derechosHipoteca)],
-    ["Derechos Notariales Actos Sin cuantía", formatoCOP(subtotalActosSinCuantia)],
-    ["Derechos Notariales Matrimonio", formatoCOP(derechosMatrimonio)],
-    ["Derechos Notariales Corrección de Registro Civil", formatoCOP(derechosCorreccionRegistroCivil)],
-    ["IVA Total del 19% (Con base en Derechos Notariales  + Hojas)", formatoCOP(ivaTotal)],
-    ["Retención en la fuente (1% sobre el valor de la venta)", formatoCOP(retencion)],
-    ["Recaudos Tesorería SuperNotariado y Fondo Notariado", formatoCOP(recaudo)],
-  ];
-
-  resultadosBody.innerHTML = filas
-    .map(([concepto, valor]) => `<tr><td>${concepto}</td><td>${valor}</td></tr>`)
-    .join("");
-
-  totalDisplay.textContent = formatoCOP(total);
+                return false;
+            }
+        }else{
+            if(id == "derechos_correccionRegistroCivil"){
+                return false;
+            }
+        }
+        return true;
+    } ).map( ([concepto, valor]) => {
+        return `
+            <tr>
+                <td>${concepto}</td>
+                <td>${valor}</td>
+            </tr>
+        `;
+    } ).join('');
+    totalDisplay.textContent = formatoCOP(total);
 }
-
-
 async function exportarPDF() {
   const element = document.getElementById("contenedorPDF");
-
   // Renderizar como imagen optimizada
   const canvas = await html2canvas(element, {
     scale: 1.2, // Menor escala = menor tamaño
     useCORS: true
   });
-
   const imgData = canvas.toDataURL("image/jpeg", 0.8); // JPEG con compresión 80%
-
   const pdf = new jspdf.jsPDF({
     orientation: "portrait",
     unit: "pt",
     format: "letter"
   });
-
   const pageWidth = pdf.internal.pageSize.getWidth();
   const pageHeight = pdf.internal.pageSize.getHeight();
-
   const margin = 20;
   const availableWidth = pageWidth - margin * 2;
-
   const imgProps = pdf.getImageProperties(imgData);
   const imgWidth = availableWidth;
   const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
-
   const finalHeight = Math.min(imgHeight, pageHeight - margin * 2);
   const scale = finalHeight / imgHeight;
-
   pdf.addImage(
     imgData,
     "JPEG",
@@ -327,14 +318,11 @@ async function exportarPDF() {
     imgWidth * scale,
     imgHeight * scale
   );
-
   pdf.save("CalculoEscrituracion.pdf");
 }
-
  function actualizarFormulario() {
       const tipoEscritura = document.getElementById("tipoEscritura").value;
       const nombreEscritura = document.getElementById("nombreEscritura");
-
       switch (tipoEscritura) {
         case "compraventa":
           nombreEscritura.textContent = "Compraventa de Bien Inmueble";
@@ -349,6 +337,8 @@ async function exportarPDF() {
           nombreEscritura.textContent = "Matrimonio";
           valorHipotecaInput.style.display = "none";
           valorVentaInput.style.display = "none";
+          valorVentaInput.value = 0;
+          valorHipotecaInput.value = 0;
           actosSinCuantiaInput.style.display = "none";
           labelvalorVenta.style.display = "none";
           labelvalorHipoteca.style.display = "none";  
@@ -358,11 +348,12 @@ async function exportarPDF() {
           nombreEscritura.textContent = "Corrección de Registro Civil";
           valorHipotecaInput.style.display = "none";
           valorVentaInput.style.display = "none";
+          valorVentaInput.value = 0;
+          valorHipotecaInput.value = 0;
           actosSinCuantiaInput.style.display = "none";
            labelvalorVenta.style.display = "none";
           labelvalorHipoteca.style.display = "none";  
           labelactosSinCuantia.style.display = "none";
-
           break;
           default:
           nombreEscritura.textContent = "Compraventa de Bien Inmueble";
@@ -374,7 +365,6 @@ async function exportarPDF() {
           labelactosSinCuantia.style.display = "block";
       }
     }
-
     valorHipotecaInput.addEventListener("input", calcular);
     valorVentaInput.addEventListener("input", calcular);
     cantidadHojasInput.addEventListener("input", calcular);
@@ -392,5 +382,3 @@ async function exportarPDF() {
 </footer>
 </body>
 </html>
-
-
