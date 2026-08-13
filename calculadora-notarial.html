@@ -115,21 +115,28 @@
     </a>
   <a href="#contacto" class="w3-bar-item w3-button w3-right">Contacto</a>
 </div>
-
   <div id="contenedorPDF">
     <h1>Calculadora de Escrituración Notarial</h1>
     <p>Calcula los gastos asociados a la escrituración notarial en Colombia</p>
     <p><em>Esta calculadora es una herramienta de referencia y no reemplaza la <a href="https://wa.me/573017673013/?text=Hola,%20quiero%20escriturar.">asesoría profesional</a>. Los costos pueden variar según la notaría y la ubicación*.</em></a></p>
-    <h3>Compraventa de Bien Inmueble</h3>
-    <label for="valorVenta">Valor de venta del inmueble (en pesos colombianos - COP):</label>
-    <input type="number" id="valorVenta" value="10000000" />
-    <label for="valorHipoteca">Valor de la hipoteca (en caso de que se constituya):</label>
-    <input type="number" id="valorHipoteca" value="0" />
-    <label for="cantidadHojas">Valor de hojas (parte matriz de la escritura + copias matriz y anexos):</label>
-    <input type="number" id="cantidadHojas" value="49" />
+   
 
-    <label for="actosSinCuantia">Número de actos sin cuantía (Actualizaciones, Aclaraciones, Cancelaciones de limitaciones al dominio, etc.):</label>
-<input type="number" id="actosSinCuantia" value="0" min="0" />
+    <p>Selecciona el tipo de escritura:</p>
+    <select id="tipoEscritura" onchange="actualizarFormulario(); calcular();">
+      <option value="compraventa">Compraventa de Bien Inmueble</option>
+      <option value="matrimonio">Matrimonio</option>
+      <option value="correccionRegistroCivil">Corrección de Registro Civil</option>
+    </select>
+
+    <h3 id="nombreEscritura">Compraventa de Bien Inmueble</h3>
+    <label id = "label-valorVenta" for="valorVenta">Valor de venta del inmueble (en pesos colombianos - COP):</label>
+    <input style="display: block;" type="number" id="valorVenta" value="0" />
+    <label id = "label-valorHipoteca" for="valorHipoteca">Valor de la hipoteca (en caso de que se constituya):</label>
+    <input style="display: block;" type="number" id="valorHipoteca" value="0" />
+    <label id = "label-cantidadHojas" for="cantidadHojas">Valor de hojas (parte matriz de la escritura + copias matriz y anexos):</label>
+    <input style="display: block;" type="number" id="cantidadHojas" value="49" />
+    <label id = "label-actosSinCuantia" for="actosSinCuantia">Número de actos sin cuantía (Actualizaciones, Aclaraciones, Cancelaciones de limitaciones al dominio, etc.):</label>
+<input style="display: block;" type="number" id="actosSinCuantia" value="0" min="0" />
 
     <table>
       <thead>
@@ -150,14 +157,21 @@
 
   <button id="exportarBtn" onclick="exportarPDF()">Exportar a PDF</button>
 <br/>
-<p style="text-align: center; font-size: 0.9rem; color: #777;">Versión 0.0.0.1</p>
+<p style="text-align: center; font-size: 0.9rem; color: #777;">Versión 0.0.0.2</p>
   <script>
+
+
     const valorVentaInput = document.getElementById("valorVenta");
+    const labelvalorVenta = document.getElementById("label-valorVenta");
+    const labelvalorHipoteca = document.getElementById("label-valorHipoteca");
+    const labelactosSinCuantia = document.getElementById("label-actosSinCuantia");
     const valorHipotecaInput = document.getElementById("valorHipoteca");
     const cantidadHojasInput = document.getElementById("cantidadHojas");
     const actosSinCuantiaInput = document.getElementById("actosSinCuantia");
     const resultadosBody = document.getElementById("resultados");
     const totalDisplay = document.getElementById("total");
+   
+
 
     function formatoCOP(num) {
       return new Intl.NumberFormat("es-CO", {
@@ -178,9 +192,11 @@ function calcular() {
   const valorActoSinCuantia = 90600;
 
   const costoHojas = hojas * costoHoja;
-
   let derechos = 0;
   let derechosHipoteca = 0;
+ let derechosMatrimonio = 64700;
+    let derechosCorreccionRegistroCivil = 12100;
+
   switch (true) {
     case valorVenta === 0:
       derechos = 0;
@@ -200,9 +216,27 @@ if (valorHipoteca > 0) {
     }
   }
 
+if (document.getElementById("tipoEscritura").value === "matrimonio") {
+    derechosMatrimonio = 64700;
+    derechosCorreccionRegistroCivil = 0;
+  }
+  else if (document.getElementById("tipoEscritura").value === "compraventa") {
+    derechosMatrimonio = 0;
+    derechosCorreccionRegistroCivil = 0;
+  }
+
+  else if (document.getElementById("tipoEscritura").value === "correccionRegistroCivil") {
+    derechosCorreccionRegistroCivil = 12100;
+    derechosMatrimonio = 0;
+  }
+  else {
+    derechosMatrimonio = 0;
+    derechosCorreccionRegistroCivil = 0;
+  }
+
   const subtotalActosSinCuantia = actosSinCuantia * valorActoSinCuantia;
   const ivaActosSinCuantia = subtotalActosSinCuantia * 0.19;
-  const ivaDerechos = (costoHojas + derechos + derechosHipoteca) * 0.19;
+  const ivaDerechos = (costoHojas + derechos + derechosHipoteca + derechosMatrimonio + derechosCorreccionRegistroCivil) * 0.19;
   const ivaTotal = (ivaActosSinCuantia + ivaDerechos);
 
   const retencion = valorVenta * 0.01;
@@ -231,7 +265,7 @@ if (valorHipoteca > 0) {
   }
 
   const total = Math.round(
-    costoHojas + derechos + derechosHipoteca + ivaTotal + retencion +
+    costoHojas + derechos + derechosHipoteca + derechosMatrimonio + derechosCorreccionRegistroCivil + ivaTotal + retencion +
     subtotalActosSinCuantia + recaudo
   );
 
@@ -240,7 +274,9 @@ if (valorHipoteca > 0) {
     ["Costo de las hojas", formatoCOP(costoHojas)],
     ["Derechos Notariales Actos con cuantía (Compraventa + Hipoteca)", formatoCOP(derechos + derechosHipoteca)],
     ["Derechos Notariales Actos Sin cuantía", formatoCOP(subtotalActosSinCuantia)],
-    ["IVA Total del 19% (Derechos A.Cuantía + Derecho A.S/Cuantía + Hojas)", formatoCOP(ivaTotal)],
+    ["Derechos Notariales Matrimonio", formatoCOP(derechosMatrimonio)],
+    ["Derechos Notariales Corrección de Registro Civil", formatoCOP(derechosCorreccionRegistroCivil)],
+    ["IVA Total del 19% (Con base en Derechos Notariales  + Hojas)", formatoCOP(ivaTotal)],
     ["Retención en la fuente (1% sobre el valor de la venta)", formatoCOP(retencion)],
     ["Recaudos Tesorería SuperNotariado y Fondo Notariado", formatoCOP(recaudo)],
   ];
@@ -294,6 +330,51 @@ async function exportarPDF() {
 
   pdf.save("CalculoEscrituracion.pdf");
 }
+
+ function actualizarFormulario() {
+      const tipoEscritura = document.getElementById("tipoEscritura").value;
+      const nombreEscritura = document.getElementById("nombreEscritura");
+
+      switch (tipoEscritura) {
+        case "compraventa":
+          nombreEscritura.textContent = "Compraventa de Bien Inmueble";
+          valorHipotecaInput.style.display = "block";
+          valorVentaInput.style.display = "block";
+          actosSinCuantiaInput.style.display = "block";
+          labelvalorVenta.style.display = "block";
+          labelvalorHipoteca.style.display = "block";  
+          labelactosSinCuantia.style.display = "block";
+          break;
+        case "matrimonio":
+          nombreEscritura.textContent = "Matrimonio";
+          valorHipotecaInput.style.display = "none";
+          valorVentaInput.style.display = "none";
+          actosSinCuantiaInput.style.display = "none";
+          labelvalorVenta.style.display = "none";
+          labelvalorHipoteca.style.display = "none";  
+          labelactosSinCuantia.style.display = "none";
+          break;
+        case "correccionRegistroCivil":
+          nombreEscritura.textContent = "Corrección de Registro Civil";
+          valorHipotecaInput.style.display = "none";
+          valorVentaInput.style.display = "none";
+          actosSinCuantiaInput.style.display = "none";
+           labelvalorVenta.style.display = "none";
+          labelvalorHipoteca.style.display = "none";  
+          labelactosSinCuantia.style.display = "none";
+
+          break;
+          default:
+          nombreEscritura.textContent = "Compraventa de Bien Inmueble";
+          valorHipotecaInput.style.display = "block";
+          valorVentaInput.style.display = "block";
+          actosSinCuantiaInput.style.display = "block";
+          labelvalorVenta.style.display = "block";
+          labelvalorHipoteca.style.display = "block";  
+          labelactosSinCuantia.style.display = "block";
+      }
+    }
+
     valorHipotecaInput.addEventListener("input", calcular);
     valorVentaInput.addEventListener("input", calcular);
     cantidadHojasInput.addEventListener("input", calcular);
