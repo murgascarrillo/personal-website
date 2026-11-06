@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refranero | MurgasCarrillo</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="refranero, refranero murgascarrillo, murgascarrillo refranero colombia, refranero de Carlos Murgas Carrillo, pagina de murgas carrillo, sitio web de carlos murgas, refranes personales, refranes,dichos populares, dichos, dichos de murgascarrillo, dichos de carlos murgas"/>
+  <meta name="author" content="Carlos Enrique Murgas Carrillo"/>
+   <meta name="copyright" content="Carlos Enrique Murgas Carrillo"/>
+       <meta name="robots" content="index,follow,archive,translate,imageindex"/>
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico"/>
+      <style>
+  body {
+      font-family: "Segoe UI", sans-serif;
+      background: #f9f9f9;
+      color: #222;
+      padding: 1rem;
+      width: 100%;
+    }
+    #contenedorPDF {
+  max-width: 650px;
+  margin: auto;
+  padding: 1rem;
+  background: white;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+    h1 {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 1rem;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 1rem;
+      margin-top: 0.3rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.2rem;
+    }
+    th, td {
+      padding: 0.6rem;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #eaeaea;
+    }
+    tfoot td {
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+    .total {
+      color: #003366;
+    }
+    #exportarBtn {
+      display: block;
+      margin: 2rem auto 0 auto;
+      padding: 0.8rem 1.5rem;
+      background-color: #003366;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    #exportarBtn:hover {
+      background-color: #005199;
+    }
+    .footer { background-color: #080808; color: white; padding: 20px;text-align: center;  width: 100%;}
+    .footer ul { display: flex;flex-direction: column; gap: 10px;    margin-top: 10px;}
+    .footer ul li a { color: #b2d1a9; font-weight: 600;  }
+  </style>
+     <script>
+        const refranes = [
+            "Yendo se sabe mejor."
+        ];
+
+        function mostrarRefran() {
+            const randomIndex = Math.floor(Math.random() * refranes.length);
+            document.getElementById("refran").textContent = refranes[randomIndex];
+        }
+    </script>
+</head>
+<body>
+     <div class="w3-bar w3-white w3-border-bottom">
+  <a href="./index.html" class="w3-bar-item w3-button">Inicio</a>
+  <a href="#portafolio" class="w3-bar-item w3-button">Portafolio</a>
+   <div class="w3-dropdown-hover">
+    <button class="w3-button">Cositas varias ▾</button>
+    <div class="w3-dropdown-content w3-bar-block w3-card-4">
+      <a href="./refranero.html" class="w3-bar-item w3-button">Refranero</a>
+    </div>
+  </div>
+  <div class="w3-dropdown-hover">
+    <button class="w3-button">Calculadoras ▾</button>
+    <div class="w3-dropdown-content w3-bar-block w3-card-4">
+      <a href="./entry-cost.html" class="w3-bar-item w3-button">Costo de Entrada</a>
+      <a href="./calculadora-notarial.html" class="w3-bar-item w3-button">Gastos Notariales</a>
+      <a href="./calculadora-terminos.html" class="w3-bar-item w3-button">Términos Procesales</a>
+      <a href="./liquidacredito.html" class="w3-bar-item w3-button">Liquidación de Crédito</a>
+    </div>
+  </div>
+  <a href="./conclave.html" class="w3-bar-item w3-button">Soluciones con abogado</a>
+  <a href="https://wa.me/573017673013/?text=Hola.%20Vengo%20desde%20murgascarrillo.com." class="w3-bar-item w3-button w3-right" target="_blank">
+      <img src="images/icon_whatsapp.webp" class="w3-round w3-image zoom" style="height:20px" alt="Icono Whatsapp" />
+    </a>
+  <a href="#contacto" class="w3-bar-item w3-button w3-right">Contacto</a>
+</div>
+   <div id = "refranero" style="text-align: center;">
+    <h1>Este es mi Refranero personal.</h1>
+    <br/>
+    <p>Pulsa el botón para leer un refrán &darr;</p>
+    <button onclick="mostrarRefran()">Mostrar Refrán</button>
+    <p id="refran"></p>
+   </div>
+
+    <footer class="footer">    
+    <p>Hazlo ♻; 2026,  MurgasCarrillo.</p>
+    <a href="./privacy.html">Política de Privacidad</a></li><br/>
+      <a href="./privacy.html">Términos y Condiciones</a></li>
+      <br/>
+      <p>Conoce más en:</p> 
+        <a href="./index.html">
+          <img id="boton-retorno" style="width:50px;height:auto;margin:auto;padding:7px;display: list-item; box-shadow: 1.3px 1.3px 1.3px 0px #717479; border-radius: 50%;" src="images/murgascarrillo.webp"/>
+        </a>
+</footer>
+</body>
+</html>
