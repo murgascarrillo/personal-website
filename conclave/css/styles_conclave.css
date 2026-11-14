@@ -23,7 +23,7 @@
   
   /* Encabezado y navegación */
   .hero-section {
-    background: linear-gradient(to right, #22a215, #b2d1a9);
+    background: linear-gradient(to right, #105408, #b2d1a9);
     color: white;
     padding: 80px 20px;
     text-align: center;
@@ -60,7 +60,7 @@
   }
   
   .btn-primary:hover {
-    background: #1a8d10;
+    background: #115b0b;
   }
   
   /* Hero content */
@@ -96,7 +96,7 @@
   .features-section h2 {
     font-size: 2rem;
     margin-bottom: 40px;
-    color: #22a215;
+    color: #238318;
   }
   
   .feature-cards {
@@ -107,7 +107,7 @@
   }
   
   .card {
-    background-color: #22a215;
+    background-color: #18750d;
     color: white;
     padding: 20px;
     border-radius: 10px;
@@ -165,7 +165,7 @@
   }
   
   .pricing-card {
-    background-color: #22a215;
+    background-color: #1b830f;
     color: white;
     padding: 20px;
     border-radius: 10px;
@@ -211,12 +211,12 @@
   }
   
   .btn-primary {
-    background-color: #22a215;
+    background-color: #0e6904;
     color: white;
   }
   
   .btn-primary:hover {
-    background-color: #1a8d10;
+    background-color: #0f5e08;
   }
   
   /* Footer */
@@ -284,7 +284,9 @@
   
     .features-section h2,
     .cta-section h2 {
-      font-size: 1.8rem;
+        font-size: 2rem;
+    margin-bottom: 40px;
+    color: #238318;
     }
   
     .feature-cards,
